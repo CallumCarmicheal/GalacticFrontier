@@ -2,7 +2,9 @@ package com.callumcarmicheal.solar;
 
 import java.awt.Font;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -16,6 +18,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import com.callumcarmicheal.OpenGL.GLUT;
 import com.callumcarmicheal.OpenGL.Util;
+import com.callumcarmicheal.solar.objects.IPlanet;
 
 
 /*
@@ -40,9 +43,10 @@ public class Main {
 	int NumberOfYear = Calendar.getInstance().get(Calendar.YEAR);;
 	float AnimateIncrement = 24.0f;
 	String simOutput;
+	List<IPlanet> simObjects;
 	
 	// Simulation objects
-	boolean HardRender = true;
+	boolean HardRender = false;
 	
 	
 	void keyboardListener() {
@@ -136,13 +140,16 @@ public class Main {
 		// (rotate the model's plane about the x axis by fifteen degrees) 
 		GL11.glRotatef( 15.0f, 1.0f, 0.0f, 0.0f );
 		
-		// Draw the sun -- as yellow, sphere
-		GL11.glColor3f( 1.0f, 1.0f, 0.0f );
-		GLUT.WireSphere3D( 1, 15, 15 );
+		HardRender = false;
 		
 		if(HardRender) 
-		// Draw Earth and the Moon
 		{
+			// Draw the sun -- as yellow, sphere
+			GL11.glColor3f( 1.0f, 1.0f, 0.0f );
+			GLUT.WireSphere3D( 1, 15, 15 );
+		
+			// Draw Earth and the Moon
+			
 			// Earth
 			{
 				// Draw the Earth
@@ -173,6 +180,10 @@ public class Main {
 				GL11.glColor3f( 1f, 1f, 1f );
 				GLUT.WireSphere3F( 0.1f, 5, 5);
 			}
+		} else {
+			for(IPlanet planet : simObjects) {
+				planet.update(HourOfDay, DayOfYear);
+			}
 		}
 		
 		if (singleStep) {
@@ -199,13 +210,15 @@ public class Main {
         		GL11.glLoadIdentity();
 
         		int diff = 15;
-           		renderFont.drawString(10, diff * 0, "Hour : " + HourOfDay, Color.cyan);
-           		renderFont.drawString(10, diff * 1, "Day  : " + DayOfYear, Color.cyan);
-           		renderFont.drawString(10, diff * 2, "Year : " + NumberOfYear, Color.cyan);
-           		renderFont.drawString(10, diff * 3, "H Inc: " + AnimateIncrement, Color.cyan);
-           		renderFont.drawString(10, diff * 4, "Spin : " + spinMode, Color.cyan);
-           		renderFont.drawString(10, diff * 5, "H Ren: " + HardRender, Color.cyan);
+           		renderFont.drawString(10, diff * 0, "Credits: CallumC, Bastien Fremondiere", Color.red);
+           		renderFont.drawString(10, diff * 1, "Hour   : " + HourOfDay, Color.cyan);
+           		renderFont.drawString(10, diff * 2, "Day    : " + DayOfYear, Color.cyan);
+           		renderFont.drawString(10, diff * 3, "Year   : " + NumberOfYear, Color.cyan);
+           		renderFont.drawString(10, diff * 4, "H Inc  : " + AnimateIncrement, Color.cyan);
+           		renderFont.drawString(10, diff * 5, "Spin   : " + spinMode, Color.cyan);
+           		renderFont.drawString(10, diff * 6, "H Ren  : " + HardRender, Color.cyan);
            		
+           		// for example 
            		GL11.glEnable(GL11.GL_DEPTH_TEST);
            		GL11.glEnable(GL11.GL_CULL_FACE);
            		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -295,6 +308,15 @@ public class Main {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
+				
+				//if(!HardRender) {
+					simObjects = new ArrayList<IPlanet>();
+					
+					simObjects.add( new com.callumcarmicheal.solar.objects.Sun() );
+					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() );
+				//}
+				
 				
 				// Initialise OpenGL
 				OpenGLInit();

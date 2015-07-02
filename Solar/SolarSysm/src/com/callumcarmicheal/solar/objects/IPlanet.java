@@ -1,5 +1,6 @@
 package com.callumcarmicheal.solar.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.text.AsyncBoxView.ChildLocator;
@@ -24,15 +25,19 @@ public abstract class IPlanet {
 	
 	// ** OPTIONAL
 	protected IPlanet BasePlanet = null; // IF NULL THEN SPIN AROUND THE SUN, Maybe?
-	protected List<IPlanet> subplanets = null;
+	protected List<IPlanet> subplanets = new ArrayList<IPlanet>();;
 	protected float dayMultiplier = 1;
-	protected float subplanets_Multiplier = 2;
+	protected float subplanets_Multiplier = 4;
 	protected float subplanets_offset = 0.7f;
 
-	public IPlanet() {
-		Color = new Vector3f(1.0f, 1.0f, 1.0f);
-		
+	public IPlanet() {			
 		init();
+		
+		if(BasePlanet != null) {
+			this.offset = new Vector3f(5.0f, 0.0f, 0.0f);
+		} else {
+			this.offset = new Vector3f(subplanets_offset, 0.0f, 0.0f);
+		}
 	}
 
 	public IPlanet(String PlanetName, int OrbitIndex, float Size, float DayMultiplier, Vector3f planetColor) {
@@ -52,14 +57,14 @@ public abstract class IPlanet {
 		this.BasePlanet 			= BasePlanet;
 		this.subplanets 			= Subplanets;
 		this.subplanets_Multiplier 	= Subplanets_Multiplier;
+
+		init();
 		
 		if(BasePlanet != null) {
-			this.offset = new Vector3f(5.0f * OrbitIndex, 0.0f, 0.0f);
+			this.offset = new Vector3f(5.0f, 0.0f, 0.0f);
 		} else {
 			this.offset = new Vector3f(subplanets_offset, 0.0f, 0.0f);
 		}
-
-		init();
 	}
 	
 	
@@ -94,7 +99,7 @@ public abstract class IPlanet {
 	 */
 
 	public IPlanet getChildPlanet(String name) throws PlanetException {
-		if(this.subplanets != null) {
+		if(!subplanets.isEmpty()) {
 			for(IPlanet moon : this.subplanets) {
 				if(moon.planetName.equals(name)){
 					return moon;
@@ -119,9 +124,11 @@ public abstract class IPlanet {
 		render(HourOfDay, DayOfYear);
 		
 		// Render Sub-planets
-		if(subplanets.size() > 1) {
-			for(IPlanet moon : subplanets) {
-				moon.update(HourOfDay, DayOfYear);
+		if(subplanets != null) {
+			if(!subplanets.isEmpty()) {
+				for(IPlanet moon : subplanets) {
+					moon.update(HourOfDay, DayOfYear);
+				}
 			}
 		}
 	}
@@ -133,14 +140,19 @@ public abstract class IPlanet {
 		float angle1;
 		float angle2;
 
-		if (BasePlanet == null) {
+		if (orbitIndex == 0) {
+			if(Color != null) {
+				GL11.glColor3f(Color.R, Color.G, Color.B);
+			}
+			GLUT.WireSphere3D( (this.size / 10), 15, 15 );
+		} else if (BasePlanet == null) {
 			// Render planet as its own
 			{
 				// Use DayOfYear to determine its position
 				GL11.glRotatef(
 						(float) ((360.0 * (DayOfYear * dayMultiplier/ 365.0))), 0.0f,
 						1.0f, 0.0f);
-				GL11.glTranslatef(this.offset.X, this.offset.Y, this.offset.Z);
+				GL11.glTranslatef((this.offset.X * orbitIndex) * 10 / 3, this.offset.Y, this.offset.Z);
 
 				GL11.glPushMatrix(); // Save Matrix State
 				{
@@ -151,7 +163,7 @@ public abstract class IPlanet {
 					if(Color != null) {
 						GL11.glColor3f(Color.R, Color.G, Color.B);
 					}
-					GLUT.WireSphere3F(0.4f, 10, 10);
+					GLUT.WireSphere3F((this.size / 10), 10, 10);
 				}
 				GL11.glPopMatrix(); // Restore Matrix State
 			}
@@ -163,7 +175,7 @@ public abstract class IPlanet {
 				if(Color != null) {
 					GL11.glColor3f(Color.R, Color.G, Color.B);
 				}
-				GLUT.WireSphere3F(BasePlanet.size / subplanets_Multiplier, 5, 5);
+				GLUT.WireSphere3F(((BasePlanet.size / 10) / BasePlanet.subplanets_Multiplier) / BasePlanet.subplanets.size(), 5, 5);
 			}
 		}
 
