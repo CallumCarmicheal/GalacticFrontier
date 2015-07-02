@@ -1,0 +1,11 @@
+*Type; Name; rotation speed; distance from center of orbit; what it is orbiting around; rotation axis; size; orbit axis; orbit tilt angle; rotation tilt angle; orbit speed
+Sun; Sun1; 15; 0; none; 0 1 0; 3; 0 0 0; 0; 0; 0
+Planet; Planet1; 5; 7.4; Sun1; 0 1 0; 0.5; 1 0 0; 10; 10; -5.9
+Moon; Moon1; -3; 1.2; Planet1; 0 1 0; 0.1; 1 0 0; 50; 20; 3
+Planet; Planet2; -1.3; 14.3; Sun1; 0 1 0; 1.4; 1 0 0; -5; 12; 2.5
+Moon; Moon2; 1; 1.8; Planet2; 0 1 1; 0.2; 0 0 1; -10; -11; 2.1
+Moon; Moon3; 2.2; 2.5; Planet2; 0.2 1 0.3; 0.3; 0 0 1; 20; 4; -4.31
+Planet; Planet3; 4.13; 22; Sun1; 0 1 0; 0.742; 1 0 0; 14.0; 40; 1.34
+Planet; Planet4; 6; 25.634; Sun1; 0 1 0; 1.93; 0 0 1; 10; 40; 2.13
+Planet; Planet5; 0.4; 39.12; Sun1; 0 1 0; 0.324; 1 0 0; 6; 40; -0.34
+Moon; Moon4; 2.9; 2.5; Planet4; 0.2 1 0.3; 0.3; 0 0 1; 20; 4; -1.31
