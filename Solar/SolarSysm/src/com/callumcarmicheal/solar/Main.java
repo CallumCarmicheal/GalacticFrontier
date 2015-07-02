@@ -2,6 +2,7 @@ package com.callumcarmicheal.solar;
 
 import java.awt.Font;
 import java.io.InputStream;
+import java.util.Calendar;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -29,16 +30,19 @@ public class Main {
 	boolean disposing = false;
 	boolean spinMode = true;
 	boolean singleStep = false;
-	
+	TrueTypeFont renderFont;
 	boolean fontLoaded = false;
 	boolean renderInfo = true;
 	
-	// These 3 will control the animation speed and state
+	// Animation -> Simulation Variables
 	float HourOfDay = 0.0f;
 	float DayOfYear = 0.0f;
+	int NumberOfYear = Calendar.getInstance().get(Calendar.YEAR);;
 	float AnimateIncrement = 24.0f;
+	String simOutput;
 	
-	TrueTypeFont renderFont;
+	// Simulation objects
+	boolean HardRender = true;
 	
 	
 	void keyboardListener() {
@@ -100,21 +104,25 @@ public class Main {
 		// Clear the rendering output/buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
+		
 		//GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_LINE );
 		//GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_FILL );
 		
 		// Update the animation state
 		if(spinMode) {
+			// Calculate the time 
 	        HourOfDay += AnimateIncrement;
 	        DayOfYear += AnimateIncrement/24.0;
-
+	        if(DayOfYear > 365) { NumberOfYear++; }
+	        
 	        HourOfDay = HourOfDay - ((int)(HourOfDay/24))*24;
 	        DayOfYear = DayOfYear - ((int)(DayOfYear/365))*365;    
 	        
-	        
-	        System.out.println( "\n\n\n" +
-	        	"Hour : " + HourOfDay + "\n" + 
-	        	"Day  :" + DayOfYear
+	        // Set simulation output
+	        simOutput =  (
+	        		"Hour : " + HourOfDay + "\n" + 
+	        		"Day  : " + DayOfYear + "\n" + 
+	        		"Year : " + NumberOfYear
 	        );
 		}
 		
@@ -132,6 +140,7 @@ public class Main {
 		GL11.glColor3f( 1.0f, 1.0f, 0.0f );
 		GLUT.WireSphere3D( 1, 15, 15 );
 		
+		if(HardRender) 
 		// Draw Earth and the Moon
 		{
 			// Earth
@@ -172,17 +181,41 @@ public class Main {
 		
 		
 		// RENDER THE HOUR AND DAY 
-        /*if(fontLoaded && renderInfo) {
+        if(fontLoaded && renderInfo) {
         	//renderFont.drawString(0, 0, "UNICORNS BECAUSE THERE MANLY!")
         	GL11.glPushMatrix(); {
-        		GL11.glDrawBuffer(GL11.GL_BACK);
         		
-           		renderFont.drawString(0, 0, "Hi", Color.yellow);
+        		GL11.glEnable(GL11.GL_BLEND);
+        		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         		
-        		GL11.glDrawBuffer(GL11.GL_FRONT_AND_BACK);
+        		GL11.glMatrixMode(GL11.GL_PROJECTION);
+        		GL11.glPushMatrix();
+        		GL11.glLoadIdentity();
+        		GL11.glOrtho(0, 800, 600, 0, 1, -1);
+        		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        		GL11.glDisable(GL11.GL_CULL_FACE);
+        		GL11.glDisable(GL11.GL_DEPTH_TEST); 
+        		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+        		GL11.glLoadIdentity();
+
+        		int diff = 15;
+           		renderFont.drawString(10, diff * 0, "Hour : " + HourOfDay, Color.cyan);
+           		renderFont.drawString(10, diff * 1, "Day  : " + DayOfYear, Color.cyan);
+           		renderFont.drawString(10, diff * 2, "Year : " + NumberOfYear, Color.cyan);
+           		renderFont.drawString(10, diff * 3, "H Inc: " + AnimateIncrement, Color.cyan);
+           		renderFont.drawString(10, diff * 4, "Spin : " + spinMode, Color.cyan);
+           		renderFont.drawString(10, diff * 5, "H Ren: " + HardRender, Color.cyan);
+           		
+           		GL11.glEnable(GL11.GL_DEPTH_TEST);
+           		GL11.glEnable(GL11.GL_CULL_FACE);
+           		GL11.glMatrixMode(GL11.GL_PROJECTION);
+           		GL11.glPopMatrix();
+           		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+           		
+           		GL11.glDisable(GL11.GL_BLEND);
         	} GL11.glPopMatrix();
         	
-        }  */
+        }  //   */
 		
 		
 		// LWJGL ALREADY HANDLES OPENGL FLUSH's AND BUFFER SWAPS (flushes ?)
@@ -251,12 +284,12 @@ public class Main {
 			displayShown = true;
 			
 			if(displayShown) {
-				/*
+				
 				// load font from a .ttf file
 				try {
 					InputStream inputStream	= ResourceLoader.getResourceAsStream("res/fonts/constan.ttf");
 					Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-					awtFont2 = awtFont2.deriveFont(24f); // set font size
+					awtFont2 = awtFont2.deriveFont(19f); // set font size
 					
 					renderFont = new TrueTypeFont(awtFont2, true); // Anti-A 
 					
@@ -264,7 +297,7 @@ public class Main {
 				} catch (Exception e) {
 					// I GOOFED UP
 					e.printStackTrace();
-				}*/
+				}
 				
 				// Initialise OpenGL
 				OpenGLInit();
