@@ -3,19 +3,29 @@ A minecraft mod with a Main Menu OGL Hook and a WIP Solar System simulation.
 
 #RoadMap :
 
-## Simulation TODO
-1: 	Time of Day and Day of year Display. (??? ABOVE PLANET ???)
-2:  Make a planet API (IPlanet as shown) to easily render planets
-3:	Implement Textures
-4:	Implement more planets in Sol
-5:  Make a projection line around Sol as shown in Chrome
-6:	Make a asteroid belt.
-7:	Atmospheric glow from planets
-8:	A MAGICAL UNICORN EATS THE GALAXY (FINAL STEP: THE MOST IMPORTANT ONE!)
+(REALISTIC)
 
+Done  | Thing To do | Type
+------------- | ------------- | -------------
+Done  | Basic Planets | Rendering
+Done  | Basic Time/Day |  Simulation
+Done  | Basic Rotation | Rendering
+Done  | Basic Text Render | Rendering
+WIP   | Planet API | Simulation
+WIP   | SubPlanet API | Simulation
+NO    | Implement Textures | Rendering
+NO    | Implement more planets in Sol | Rendering / Simulation
+NO    | Make a projection line around Sol | Rendering / Simulation]
+NO    | Make a asteroid belt. | Simulation
+NO    | Atmospheric glow from planets | Rendering
+NO    | A MAGICAL UNICORN EATS THE GALAXY (FINAL STEP: THE MOST IMPORTANT ONE!) | REAL LIFE
 
-## MINECRAFT
-1. 	Minecraft 3d World with Minecraft Texture
-2. 	Server browser made of a UNIVERSE filled with galaxies (which is a IP) and planets are OVERWORLD, NETHER, END and other dimensions from mods
-3. 	3d Navigation
+(WHISHLIST)
+
+Done | Thing To do | Type
+------------- | ------------- | -------------
+NO   | Minecraft 3d World | Rendering
+NO   | Minecraft Galaxy  | Rendering
+NO   | Galaxy Exploration | Rendering/Sim
+No   | 3d Navigation  | Rendering
 

@@ -246,7 +246,6 @@ public class Main {
 		h = (h == 0) ? 1 : h;
 		w = (w == 0) ? 1 : w;
 		
-		
 		// View port uses whole number
 		aspectRatio = (float)w/(float)h;
 		
@@ -290,12 +289,10 @@ public class Main {
 					InputStream inputStream	= ResourceLoader.getResourceAsStream("res/fonts/constan.ttf");
 					Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 					awtFont2 = awtFont2.deriveFont(19f); // set font size
-					
-					renderFont = new TrueTypeFont(awtFont2, true); // Anti-A 
+					renderFont = new TrueTypeFont(awtFont2, false); // Anti-A 
 					
 					fontLoaded = true;
 				} catch (Exception e) {
-					// I GOOFED UP
 					e.printStackTrace();
 				}
 				
