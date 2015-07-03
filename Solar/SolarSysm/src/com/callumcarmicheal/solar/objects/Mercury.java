@@ -18,7 +18,7 @@ public class Mercury extends IPlanet {
 		subplanets_Multiplier = 4;
 		subplanets_offset = 0.7f;
 		
-		dayMultiplier = ((58 * 7) + (18) + (30 / 60));
+		dayMultiplier = ((58 * 7) + (18) + (30 / 60)) / 24;
 		
 	}
 	

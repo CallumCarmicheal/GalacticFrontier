@@ -45,7 +45,7 @@ public class Main {
 	String simOutput;
 	List<IPlanet> simObjects;
 	
-	// Simulation objects
+	// Render using code or Objects
 	boolean HardRender = false;
 	
 	
@@ -121,7 +121,7 @@ public class Main {
 			// Calculate the time 
 	        HourOfDay += AnimateIncrement;
 	        DayOfYear += AnimateIncrement/24.0;
-	        if(DayOfYear > 365) { NumberOfYear++; }
+	        if(DayOfYear > 364) { NumberOfYear++; }
 	        
 	        HourOfDay = HourOfDay - ((int)(HourOfDay/24))*24;
 	        DayOfYear = DayOfYear - ((int)(DayOfYear/365))*365;    
@@ -333,7 +333,7 @@ public class Main {
 					simObjects = new ArrayList<IPlanet>();
 					
 					simObjects.add( new com.callumcarmicheal.solar.objects.Sun() );
-					//simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
+					simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() );
 				//}
 				
