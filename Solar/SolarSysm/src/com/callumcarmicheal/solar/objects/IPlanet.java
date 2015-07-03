@@ -126,8 +126,8 @@ public abstract class IPlanet {
 		if(subplanets != null) {
 			if(!subplanets.isEmpty()) {
 				
-				// IPLANET tell the statement what datatype we are using
-				// subplanets is the arraylist
+				// IPLANET tell the statement what data type we are using
+				// sub-planets is the array list
 				for(IPlanet moon : subplanets) {
 					moon.update(HourOfDay, DayOfYear);
 				}
@@ -148,6 +148,8 @@ public abstract class IPlanet {
 			}
 			GLUT.WireSphere3D( (this.size / 10), 15, 15 );
 		} else if (BasePlanet == null) {
+			GL11.glLoadIdentity();
+			
 			// Render planet as its own
 			{
 				// Use DayOfYear to determine its position

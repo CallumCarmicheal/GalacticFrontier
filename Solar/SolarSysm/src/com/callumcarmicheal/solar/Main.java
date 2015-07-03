@@ -74,6 +74,10 @@ public class Main {
 						spinMode = true;
 					}
 					
+					if(Keyboard.getEventKey() == Keyboard.KEY_1) {
+						this.HardRender = !this.HardRender;
+					}
+					
 					if(Keyboard.getEventKey() == Keyboard.KEY_UP) {
 						// Double the animation time step
 						AnimateIncrement *= 2.0f;
@@ -329,7 +333,7 @@ public class Main {
 					simObjects = new ArrayList<IPlanet>();
 					
 					simObjects.add( new com.callumcarmicheal.solar.objects.Sun() );
-					simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
+					//simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() );
 				//}
 				

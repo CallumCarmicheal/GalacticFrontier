@@ -14,7 +14,7 @@ public class Earth extends IPlanet {
 		size = 4;
 		Color = new Vector3f(0f, 0f, 1f);
 		subplanets.add(new Planet("Earth (Moon)", 3, 0, 0, new Vector3f(1.0f, 1.0f, 1.0f), this, null, 4 ));
-		dayMultiplier = 1;
+		dayMultiplier = 4;
 		subplanets_Multiplier = 4;
 		subplanets_offset = 0.7f;
 		
