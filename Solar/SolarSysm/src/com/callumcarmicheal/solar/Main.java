@@ -48,7 +48,6 @@ public class Main {
 	// Render using code or Objects
 	boolean HardRender = false;
 	
-	
 	void keyboardListener() {
 		
 		// Check if our keyboard listener is created and then execute commands from it
@@ -137,14 +136,6 @@ public class Main {
 		// Clear the current matrix (Model View)
 		GL11.glLoadIdentity();
 		
-
-		
-		//GLU.gluLookAt(
-		//	0, 50, 0, // Where am i
-		//	0, 0, 0,  // Where im looking
-		//	0, -1, 0 // The eye rotation?
-		//);
-		
 		// Back off eight units to be able to view from origin
 		GL11.glTranslatef( 0.0f, 0.0f, -8.0f );
 		
@@ -168,7 +159,7 @@ public class Main {
 				// Draw the Earth
 				// First position it around the sun
 				//		Use DayOfYear to determine its position
-				GL11.glRotatef( (float)(360.0 * DayOfYear / 365.0), 0.0f, 1.0f, 0.0f );
+				GL11.glRotatef( (float)(360.0 * (DayOfYear) / 365.0), 0.0f, 1.0f, 0.0f );
 				GL11.glTranslatef( 5.0f, 0.0f, 0.0f );
 				
 				GL11.glPushMatrix();  // Save Matrix State
@@ -195,7 +186,7 @@ public class Main {
 			}
 		} else {
 			for(IPlanet planet : simObjects) {
-				planet.update(HourOfDay, DayOfYear);
+				planet.update(HourOfDay, DayOfYear, NumberOfYear);
 			}
 		}
 		

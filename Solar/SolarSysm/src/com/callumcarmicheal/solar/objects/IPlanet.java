@@ -77,6 +77,16 @@ public abstract class IPlanet {
 			this.offset = subplanets_offset;
 		}
 	}
+	
+	public float getDay(float DayOfYear) {
+		return (360.0f * DayOfYear / 365.0f);
+	}
+	
+	public float getHour(float HourOfDay) {
+		return (360.0f * HourOfDay / 24.0f);
+	}
+	
+	
 
 	/**
 	 * 
@@ -134,18 +144,15 @@ public abstract class IPlanet {
 	/**
 	 * Called before render
 	 */
-	public void update(float HourOfDay, float DayOfYear) {
+	public void update(float HourOfDay, float DayOfYear, int NumberOfYear) {
 		// Render Self
-		render(HourOfDay, DayOfYear);
+		render(HourOfDay, DayOfYear, NumberOfYear);
 
 		// Render Sub-planets
 		if (subplanets != null) {
 			if (!subplanets.isEmpty()) {
-
-				// IPLANET tell the statement what data type we are using
-				// sub-planets is the array list
 				for (IPlanet moon : subplanets) {
-					moon.update(HourOfDay, DayOfYear);
+					moon.update(HourOfDay, DayOfYear, NumberOfYear);
 				}
 			}
 		}
@@ -155,7 +162,7 @@ public abstract class IPlanet {
 	 * DO NOT OVERWRITE UNLESS NEEDED TO, AFTER CALL super.render(HourOfDay,
 	 * DayOfYear);
 	 */
-	private void render(float HourOfDay, float DayOfYear) {
+	private void render(float HourOfDay, float DayOfYear, int NumberOfYear) {
 		float angle1;
 		float angle2;
 
@@ -175,19 +182,15 @@ public abstract class IPlanet {
 			
 			// Render planet as its own
 			{
-				// Use DayOfYear to determine its position
-				GL11.glRotatef(
-						(float) ((360.0 * (DayOfYear)) / 360.0), 0.0f,
-						1.0f, 0.0f);
-
+				// Get Planets time of Day (DEFAULT : EARTH)
+				GL11.glRotatef(getDay(DayOfYear), 0.0f, 1.0f, 0.0f);
+				GL11.glRotatef(getHour(HourOfDay), 0.0f, 1.0f, 0.0f);
+				
 				GL11.glTranslatef((2 * orbitIndex - 1 + offset), 0.0f, 0.0f);
 
 				GL11.glPushMatrix(); // Save Matrix State
 				{
-					GL11.glRotatef((float) (360.0 * HourOfDay / 24.0), 0.0f,
-							1.0f, 0.0f);
-
-					// Third, we draw earth as a Sphere
+					// Third, we draw the Planet as a Sphere
 					if (Color != null) {
 						GL11.glColor3f(Color.R, Color.G, Color.B);
 					}

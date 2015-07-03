@@ -18,8 +18,21 @@ public class Mercury extends IPlanet {
 		subplanets_Multiplier = 4;
 		subplanets_offset = 0.7f;
 		
-		dayMultiplier = ((58 * 7) + (18) + (30 / 60)) / 24;
+		dayMultiplier = ((58 * 7) + (18) + (30 / 60));
 		
 	}
+	
+	
+	@Override
+	public float getDay(float DayofYear) {
+		return (DayofYear + (((58 * 7) + (18) + (30 / 60)) * 24));
+	}
+	
+	@Override
+	public float getHour(float HourOfDay) {
+		System.out.println("TEST");
+		return (HourOfDay + ((58 * 7) + (18) + (30 / 60)));
+	}
+	
 	
 }
