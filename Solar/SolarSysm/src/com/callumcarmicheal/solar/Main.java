@@ -133,6 +133,14 @@ public class Main {
 		// Clear the current matrix (Model View)
 		GL11.glLoadIdentity();
 		
+
+		
+		//GLU.gluLookAt(
+		//	0, 50, 0, // Where am i
+		//	0, 0, 0,  // Where im looking
+		//	0, -1, 0 // The eye rotation?
+		//);
+		
 		// Back off eight units to be able to view from origin
 		GL11.glTranslatef( 0.0f, 0.0f, -8.0f );
 		
@@ -140,8 +148,9 @@ public class Main {
 		// (rotate the model's plane about the x axis by fifteen degrees) 
 		GL11.glRotatef( 15.0f, 1.0f, 0.0f, 0.0f );
 		
-		HardRender = false;
 		
+		// Hard Render = Render it using raw code no Planet Objects
+		// 
 		if(HardRender) 
 		{
 			// Draw the sun -- as yellow, sphere
@@ -210,13 +219,13 @@ public class Main {
         		GL11.glLoadIdentity();
 
         		int diff = 15;
-           		renderFont.drawString(10, diff * 0, "Credits: CallumC, Bastien Fremondiere", Color.red);
-           		renderFont.drawString(10, diff * 1, "Hour   : " + HourOfDay, Color.cyan);
-           		renderFont.drawString(10, diff * 2, "Day    : " + DayOfYear, Color.cyan);
-           		renderFont.drawString(10, diff * 3, "Year   : " + NumberOfYear, Color.cyan);
-           		renderFont.drawString(10, diff * 4, "H Inc  : " + AnimateIncrement, Color.cyan);
-           		renderFont.drawString(10, diff * 5, "Spin   : " + spinMode, Color.cyan);
-           		renderFont.drawString(10, diff * 6, "H Ren  : " + HardRender, Color.cyan);
+           		renderFont.drawString(10, diff * 0, "Creators: CallumC, Bastien Fremondiere", Color.red);
+           		renderFont.drawString(10, diff * 1, "Hour    : " + HourOfDay, Color.cyan);
+           		renderFont.drawString(10, diff * 2, "Day     : " + DayOfYear, Color.cyan);
+           		renderFont.drawString(10, diff * 3, "Year    : " + NumberOfYear, Color.cyan);
+           		renderFont.drawString(10, diff * 4, "H Inc   : " + AnimateIncrement, Color.cyan);
+           		renderFont.drawString(10, diff * 5, "Spin    : " + spinMode, Color.cyan);
+           		renderFont.drawString(10, diff * 6, "H Ren   : " + HardRender, Color.cyan);
            		
            		// for example 
            		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -239,6 +248,12 @@ public class Main {
 		// REQUEST ANOTHER BUFFER TO CREATED FOR ANIMATION PURPOSE
 	}
 	
+	
+	void render_VINGARDIUM_LEVIOSA() {
+		
+	}
+	
+	
 	// Initialise OpenGL's rendering mode
 	void OpenGLInit() {
 		GL11.glShadeModel( GL11.GL_FLAT );
@@ -252,7 +267,7 @@ public class Main {
 	void onWindowResize() {
 		int w = Display.getWidth();
 		int h = Display.getHeight();
-		float FOV = 60.0f, zNear = 1.0f, zFar = 30.0f;
+		float FOV = 60.0f, zNear = 1.0f, zFar = 100.0f;
 		float aspectRatio;
 		
 		// ??????
@@ -301,8 +316,8 @@ public class Main {
 				try {
 					InputStream inputStream	= ResourceLoader.getResourceAsStream("res/fonts/constan.ttf");
 					Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-					awtFont2 = awtFont2.deriveFont(19f); // set font size
-					renderFont = new TrueTypeFont(awtFont2, false); // Anti-A 
+					awtFont2 = awtFont2.deriveFont(15f); // set font size
+					renderFont = new TrueTypeFont(awtFont2, true); // Anti-A 
 					
 					fontLoaded = true;
 				} catch (Exception e) {
@@ -314,6 +329,7 @@ public class Main {
 					simObjects = new ArrayList<IPlanet>();
 					
 					simObjects.add( new com.callumcarmicheal.solar.objects.Sun() );
+					simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() );
 				//}
 				

@@ -26,7 +26,7 @@ public abstract class IPlanet {
 	// ** OPTIONAL
 	protected IPlanet BasePlanet = null; // IF NULL THEN SPIN AROUND THE SUN, Maybe?
 	protected List<IPlanet> subplanets = new ArrayList<IPlanet>();;
-	protected float dayMultiplier = 1;
+	protected float dayMultiplier = 1; 		// THIS IS THE SPEED MULTIPLIER -.-
 	protected float subplanets_Multiplier = 4;
 	protected float subplanets_offset = 0.7f;
 
@@ -66,7 +66,6 @@ public abstract class IPlanet {
 			this.offset = new Vector3f(subplanets_offset, 0.0f, 0.0f);
 		}
 	}
-	
 	
 	
 	/** 
@@ -126,6 +125,9 @@ public abstract class IPlanet {
 		// Render Sub-planets
 		if(subplanets != null) {
 			if(!subplanets.isEmpty()) {
+				
+				// IPLANET tell the statement what datatype we are using
+				// subplanets is the arraylist
 				for(IPlanet moon : subplanets) {
 					moon.update(HourOfDay, DayOfYear);
 				}
@@ -150,7 +152,7 @@ public abstract class IPlanet {
 			{
 				// Use DayOfYear to determine its position
 				GL11.glRotatef(
-						(float) ((360.0 * (DayOfYear * dayMultiplier/ 365.0))), 0.0f,
+						(float) ((360.0 * (DayOfYear * dayMultiplier) / 365.0)), 0.0f,
 						1.0f, 0.0f);
 				GL11.glTranslatef((this.offset.X * orbitIndex) * 10 / 3, this.offset.Y, this.offset.Z);
 
