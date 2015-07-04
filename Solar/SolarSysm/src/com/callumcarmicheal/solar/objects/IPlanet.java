@@ -282,22 +282,22 @@ public abstract class IPlanet {
 				System.out.println(debugOutput);
 			}
 			
-			// RENDER PREDICTION LINE
+			/*/ RENDER PREDICTION LINE
 			
-			for (float calcDay = 0.0f; calcDay < 24; calcDay += (12.0f / 1000.0f)) {
+			for (float calcDay = 0.0f; calcDay < 24; calcDay += (12.0f / 100.0f)) {
 
 				//I just realised this would not work for a sub planet
 				//	that is a sub planet of a sub planet so on so on...
 				
 				// set to base planet location
 				GL11.glRotatef(calcDay, 0.0f, 1.0f, 0.0f);
-				GL11.glTranslatef(0.7f, 0.0f, 0.0f);
+				GL11.glTranslatef(0.05f, 0.0f, 0.0f);
 				
 				GL11.glPointSize(1f);
 				GL11.glBegin(GL11.GL_POINTS); { 
 					GL11.glVertex3f(0, 0, 0);
 				} GL11.glEnd();
-			}
+			} // */
 		}
 
 	}

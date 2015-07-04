@@ -70,8 +70,6 @@ public class Camera {
 			renderSettings.FAR
 		);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		
-		GL11.glShadeModel(GL11.GL_FLAT);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		
@@ -87,20 +85,25 @@ public class Camera {
 	
 	// Does not work, and i have no clue why ;(
 	public void useCamera() { 
-		GL11.glLoadIdentity();
+		//GL11.glLoadIdentity();
+
+		GL11.glMatrixMode(GL11.GL_PROJECTION); {
+			GL11.glRotatef(rot.x, 1, 0, 0);
+			GL11.glRotatef(rot.y, 0, 1, 0);
+			GL11.glRotatef(rot.z, 0, 0, 1);
+			GL11.glTranslatef(loc.x, loc.y, loc.z);
+			
+			//System.out.println(
+			//		"OK I MOVE : \n    " + 
+			//				loc.toString() + "    " + rot.toString() + "\n"
+			//);
+		} GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glRotatef(rot.x, 1, 0, 0);
-		GL11.glRotatef(rot.y, 0, 1, 0);
-		GL11.glRotatef(rot.z, 0, 0, 1);
-		GL11.glTranslatef(loc.x, loc.y, loc.z);
-		
-		//System.out.println(
-		//		"OK I MOVE : \n    " + 
-		//				loc.toString() + "    " + rot.toString() + "\n"
-		//);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		// reset the cords so they dont mess with our next rotation call
+		//loc.x = 0; loc.y = 0; loc.z = 0;
+		//rot.x = 0; rot.y = 0; rot.z = 0;
 	}
+	
 	
 	public void moveZ(float amount) {
 		loc.z += amount * Math.sin(Math.toRadians(rot.y + 90));
@@ -117,7 +120,7 @@ public class Camera {
 	
 	public void keyboardUpdate(boolean isEvent, boolean KBEventState) {
 		if(isEvent) { /* PRESS ONCE STUFF */
-			if(KBEventState) { /* PRESSED */ 
+			if(KBEventState) { /* PRESSED */ /*
 				if((Keyboard.getEventKey() == Keyboard.KEY_W)) {
 					moveZ(0.001f);
 				}
@@ -136,10 +139,28 @@ public class Camera {
 				
 				if((Keyboard.getEventKey() == Keyboard.KEY_NUMPAD2)) {
 					rotateY(-1f);
-				}
+				} */
 			} else { /* RELEASED */ }
 		} else { /* HOLDABLE KEYS */
-	
+			if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+				moveZ(0.01f);
+			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD4)) {
+				rotateX(1f);
+			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD6)) {
+				rotateX(-1f);
+			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD8)) {
+				rotateY(1f);
+			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD2)) {
+				rotateY(-1f);
+			}
 		}
 	}
 	

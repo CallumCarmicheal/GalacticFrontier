@@ -151,6 +151,11 @@ public class Main {
 		// Clear the rendering output/buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
+        GL11.glPushMatrix();
+        	//GL11.glLoadIdentity();
+    		renderCamera.useCamera();
+    	GL11.glPopMatrix();
+    	
 		//GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_LINE );
 		//GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_FILL );
 		
@@ -275,9 +280,7 @@ public class Main {
         	} GL11.glPopMatrix();
         	
         	
-        }  //   */
-		
-        renderCamera.useCamera();
+        }  // */
         
 		// LWJGL ALREADY HANDLES OPENGL FLUSH's AND BUFFER SWAPS (flushes ?) ill leave it in to be safe
 		GL11.glFlush();
@@ -392,7 +395,7 @@ public class Main {
 			{
 				int w = Display.getWidth();
 				int h = Display.getHeight();
-				float FOV = 60.0f, zNear = 1.0f, zFar = 100.0f;
+				float FOV = 60.0f, zNear = 0.001f, zFar = 100.0f;
 				float aspectRatio;
 				
 				// ??????
