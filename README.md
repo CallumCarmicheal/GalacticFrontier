@@ -48,6 +48,7 @@ E      | Move the camera down
 Q      | Move the camera up
 W      | Move camera Forward
 LSHIFT | Speed up camera movement
+LCTRL  | Slow down camera movement
 S      | Move camera backwards
 A      | Move camera left
 D      | Move camera right

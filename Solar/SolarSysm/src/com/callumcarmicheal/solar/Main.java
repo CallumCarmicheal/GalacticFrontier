@@ -268,12 +268,14 @@ public class Main {
 	
 	        		int diff = 15;
 	           		renderFont.drawString(10, diff * 0, "Creators: CallumC, Bastien Fremondiere", Color.red);
-	           		renderFont.drawString(10, diff * 1, "Hour    : " + HourOfDay, Color.cyan);
-	           		renderFont.drawString(10, diff * 2, "Day     : " + DayOfYear, Color.cyan);
-	           		renderFont.drawString(10, diff * 3, "Year    : " + NumberOfYear, Color.cyan);
-	           		renderFont.drawString(10, diff * 4, "H Inc   : " + AnimateIncrement, Color.cyan);
-	           		renderFont.drawString(10, diff * 5, "Spin    : " + spinMode, Color.cyan);
-	           		renderFont.drawString(10, diff * 6, "H Ren   : " + HardRender, Color.cyan);
+	           		renderFont.drawString(10, diff * 1, "LOC     : " + renderCamera.getLocation().toString(), Color.green);
+	           		renderFont.drawString(10, diff * 2, "ROT     : " + renderCamera.getRotation().toString(), Color.green);
+	           		renderFont.drawString(10, diff * 3, "Hour    : " + HourOfDay, Color.cyan);
+	           		renderFont.drawString(10, diff * 4, "Day     : " + DayOfYear, Color.cyan);
+	           		renderFont.drawString(10, diff * 5, "Year    : " + NumberOfYear, Color.cyan);
+	           		renderFont.drawString(10, diff * 6, "H Inc   : " + AnimateIncrement, Color.cyan);
+	           		renderFont.drawString(10, diff * 7, "Spin    : " + spinMode, Color.cyan);
+	           		renderFont.drawString(10, diff * 8, "H Ren   : " + HardRender, Color.cyan);
 	           		
 	           		// Just leave the matrix mode, it knows where you live (it will blow up the software)
 	           		// FINE ILL LEAVE YOU ALONE, JESUS!
@@ -311,10 +313,14 @@ public class Main {
 	
 	// Resize the rendering matrix to wrap around the new WxH
 	// THIS SEEMS TO BE BROKEN
-	void onWindowResize() {
+	void onWindowResize(boolean createCam) {
+		
 		int w = Display.getWidth();
 		int h = Display.getHeight();
-		float FOV = 60.0f, zNear = 1.0f, zFar = 100.0f;
+		float 
+			FOV = 60.0f, 
+			zNear = 0.001f, //TODO : fix clipping range
+			zFar = 1000.0f;
 		float aspectRatio;
 		
 		// ??????
@@ -338,7 +344,10 @@ public class Main {
 		GL11.glScissor(0, 0, w, h);
 		GL11.glViewport(0, 0, w, h); */
 		
-		if(renderCamera == null){} else {
+		if(createCam){
+			renderCamera = new Camera(FOV, aspectRatio, zNear, zFar);
+		} 
+		else {
 			if(renderCamera.ISREADY) {
 				renderCamera.setRenderSettings(FOV, aspectRatio, zNear, zFar);
 			}
@@ -387,7 +396,7 @@ public class Main {
 					
 					simObjects.add( new com.callumcarmicheal.solar.objects.Sun() 	 );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
-					//simObjects.add( new com.callumcarmicheal.solar.objects.Venus() 	 );
+					simObjects.add( new com.callumcarmicheal.solar.objects.Venus() 	 );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() 	 );
 				//}
 				
@@ -400,21 +409,7 @@ public class Main {
 		if(displayShown) {
 			// Initialise OpenGL
 			{
-				int w = Display.getWidth();
-				int h = Display.getHeight();
-				float 
-					FOV = 60.0f, 
-					zNear = 0.00000000000000000000000000000000000001f, //TODO : fix clipping range
-					zFar = 100000000000000000000000000000000000000.0f;
-				float aspectRatio;
-				
-				h = (h == 0) ? 1 : h;
-				w = (w == 0) ? 1 : w;
-				
-				// View port uses whole number
-				aspectRatio = (float)w/(float)h;
-				
-				renderCamera = new Camera(FOV, aspectRatio, zNear, zFar);
+				onWindowResize(true);
 			}
 			
 			Display.setTitle("Solar System Simulation");
@@ -429,7 +424,7 @@ public class Main {
 				if(!disposing) {
 					// Do calculations
 					if(Display.wasResized())
-						onWindowResize();
+						onWindowResize(false);
 					
 					// Take the Input
 					mouseListener();

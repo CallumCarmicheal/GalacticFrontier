@@ -128,21 +128,6 @@ public class Camera {
 		position.z -= distance * (float) Math.cos(Math.toRadians(rotation.y));
 	}
 
-	// strafes the camera left relitive to its current rotation (rot.y)
-	public void strafeLeft(float distance) {
-		position.x -= distance
-				* (float) Math.sin(Math.toRadians(rotation.y - 90));
-		position.z += distance
-				* (float) Math.cos(Math.toRadians(rotation.y - 90));
-	}
-
-	// strafes the camera right relitive to its current rotation (rot.y)
-	public void strafeRight(float distance) {
-		position.x -= distance
-				* (float) Math.sin(Math.toRadians(rotation.y + 90));
-		position.z += distance
-				* (float) Math.cos(Math.toRadians(rotation.y + 90));
-	}
 
 	public void moveZ(float amount) {
 		position.z += amount * Math.sin(Math.toRadians(rotation.y + 90));
@@ -158,7 +143,6 @@ public class Camera {
 		position.x += amount * Math.cos(Math.toRadians(rotation.y));
 	}
 	
-
 	public void move(float amount, float direction) {
 	    position.z += amount * Math.sin(Math.toRadians(rotation.y + 90 * direction));
 	    position.x += amount * Math.cos(Math.toRadians(rotation.y + 90 * direction));
@@ -190,6 +174,8 @@ public class Camera {
 				// moveZ(0.01f);
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					walkForward(1f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					walkForward(0.01f);
 				} else {
 					walkForward(0.1f);
 				}
@@ -198,6 +184,8 @@ public class Camera {
 			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					walkBackwards(1f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					walkBackwards(0.01f);
 				} else {
 					walkBackwards(0.1f);
 				}
@@ -205,23 +193,37 @@ public class Camera {
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					strafeRight(10f);
+					moveX(-1f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					moveX(-0.01f);
 				} else {
-					strafeRight(1f);
+					moveX(-0.1f);
+				}
+			}
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+					moveX(1f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					moveX(0.01f);
+				} else {
+					moveX(0.1f);
 				}
 			}
 
-			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					strafeLeft(10f);
-				} else {
-					strafeLeft(1f);
-				}
-			}
+			//if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			//	if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			//		walkLeft(10f);
+			//	} else {
+			//		walkLeft(1f);
+			//	}
+			//}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_O)) { 
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateZ(4f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					rotateZ(0.04f);
 				} else {
 					rotateZ(0.4f);
 				}
@@ -230,6 +232,8 @@ public class Camera {
 			if (Keyboard.isKeyDown(Keyboard.KEY_P)) { 
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateZ(-4f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					rotateZ(-0.04f);
 				} else {
 					rotateZ(-0.4f);
 				}
@@ -238,6 +242,8 @@ public class Camera {
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateX(-1f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					rotateX(-0.01f);
 				} else {
 					rotateX(-0.1f);
 				}
@@ -246,6 +252,8 @@ public class Camera {
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateX(1f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					rotateX(0.01f);
 				} else {
 					rotateX(0.1f);
 				}
@@ -254,6 +262,8 @@ public class Camera {
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateY(-1f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					rotateY(-0.01f);
 				} else {
 					rotateY(-0.1f);
 				}
@@ -262,14 +272,18 @@ public class Camera {
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateY(1f);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					rotateY(0.01f);
 				} else {
-					rotateY(1f);
+					rotateY(0.1f);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					moveY(1);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					moveY(0.01f);
 				} else {
 					moveY(0.1f);
 				}
@@ -278,6 +292,8 @@ public class Camera {
 			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					moveY(-1);
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+					moveY(-0.01f);
 				} else {
 					moveY(-0.1f);
 				}

@@ -38,9 +38,9 @@ public class Mercury extends IPlanet {
 		 * 				(X) Divided by 10 to slow it down to real time
 		 */
 		
-		return (DayofYear * ((57) + (15 / 10) + (30 / 100)) / 10);
+		//return (DayofYear * ((57) + (15 / 10) + (30 / 100)) / 10);
 		
-		//return (DayofYear + (DayofYear * 24f));
+		return (float) (DayofYear * 58.65);
 	}
 	
 	

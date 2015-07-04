@@ -19,9 +19,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class IPlanet {
 
-	// DO NOT TOUCH
-	protected int SizeMultiplier = 5;
-	
+	// DO NOT TOUCH (RENDER AND SIMULATION VARS)
+	protected int SizeMultiplier = 4;
+	protected float DistFromSun    = 40f;
 	
 	// REQUIRED
 	protected String planetName;
@@ -29,6 +29,7 @@ public abstract class IPlanet {
 	protected float size;
 	protected Vector3f Color;
 	protected float distanceFromSun;
+	
 
 	// ** OPTIONAL
 	protected IPlanet BasePlanet = null; // IF NULL THEN SPIN AROUND THE SUN
@@ -200,7 +201,7 @@ public abstract class IPlanet {
 			{
 				// Get Planet time of Day (DEFAULT : EARTH)
 				GL11.glRotatef(getDay(DayOfYear), 0.0f, 1.0f, 0.0f);
-				GL11.glTranslatef((35f * distanceFromSun), 0.0f, 0.0f);
+				GL11.glTranslatef((DistFromSun * distanceFromSun), 0.0f, 0.0f);
 
 				// GL11.glRotatef(HourOfDay, 0.0f, 1.0f, 0.0f);
 				GL11.glPushMatrix(); // Save Matrix State
@@ -223,7 +224,7 @@ public abstract class IPlanet {
 						GL11.glTranslatef(0.0f, 0.0f, -8.0f);
 						GL11.glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
 						GL11.glRotatef(calcDay, 0.0f, 1.0f, 0.0f);
-						GL11.glTranslatef((35f * distanceFromSun), 0.0f,
+						GL11.glTranslatef((DistFromSun * distanceFromSun), 0.0f,
 								0.0f);
 						
 						GL11.glPointSize(0.1f);
