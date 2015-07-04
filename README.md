@@ -34,3 +34,26 @@ NO            | Minecraft Galaxy   | Rendering
 NO            | Galaxy Exploration | Rendering/Sim
 No            | 3d Navigation      | Rendering
 
+
+# Controls
+
+Key    | Action
+-------|-------
+R      | Toggle Animation (ON/OFF)
+T      | Sets to single step (turns off Animation and increment hours by 1)
+PGUP   | Increment Hour per Frame Skip on Animation
+PGDOWN | Decrement Hour per Frame Skip on Animation
+M      | Toggle grab mouse
+E      | Move the camera down
+Q      | Move the camera up
+W      | Move camera Forward
+LSHIFT | Speed up camera movement
+S      | Move camera backwards
+A      | Move camera left
+D      | Move camera right
+ArUP   | Rotate camera upwards
+ArDOWN | Rotate camera downwards
+ArLEFT | Rotate camera left
+ArRIGHT| Rotate camera right (Yeah who would of guessed?)
+MOUSE  | Rotate camera on XY
+ESCAPE | Close Application

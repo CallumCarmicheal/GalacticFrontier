@@ -75,26 +75,28 @@ public class Main {
 						}
 					}
 					
-					if(Keyboard.getEventKey() == Keyboard.KEY_S) {
+					if(Keyboard.getEventKey() == Keyboard.KEY_T) {
 						singleStep = true;
 						spinMode = true;
 					}
 					
-					if(Keyboard.getEventKey() == Keyboard.KEY_1) {
+					if(Keyboard.getEventKey() == Keyboard.KEY_G) {
 						this.HardRender = !this.HardRender;
 					}
 					
-					if(Keyboard.getEventKey() == Keyboard.KEY_UP) {
+					// Page up
+					if(Keyboard.getEventKey() == Keyboard.KEY_PRIOR) {
 						// Double the animation time step
 						AnimateIncrement *= 2.0f;
 					}
 
-					if(Keyboard.getEventKey() == Keyboard.KEY_DOWN) {
+					// Page down
+					if(Keyboard.getEventKey() == Keyboard.KEY_NEXT) {
 						// Halve the animation time step
 						AnimateIncrement /= 2.0f;
 					}
 					
-					if(Keyboard.getEventKey() == Keyboard.KEY_LEFT) {
+					if(Keyboard.getEventKey() == Keyboard.KEY_M) {
 						// Toggle mouse grab
 						this.grabMouse = !this.grabMouse;
 					}
@@ -395,7 +397,9 @@ public class Main {
 			{
 				int w = Display.getWidth();
 				int h = Display.getHeight();
-				float FOV = 60.0f, zNear = 0.001f, zFar = 100.0f;
+				float FOV = 60.0f, 
+						zNear = 0.00000000000000000000000000000000000000000001f, //TODO : fix clipping range
+						zFar = 1000.0f;
 				float aspectRatio;
 				
 				// ??????
