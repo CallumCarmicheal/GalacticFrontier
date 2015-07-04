@@ -18,4 +18,8 @@ public class PlanetException extends Exception {
 	public PlanetException(ExCause Cause, String Reason) {
 		this(null, Cause, Reason);
 	}
+	
+	public void printERR() {
+		System.err.println("PLANETEXCEPTION : Cause (" + cause + ") Reason (" + reasonString + ")");
+	}
 }

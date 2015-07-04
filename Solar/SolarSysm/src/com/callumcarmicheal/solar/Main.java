@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -19,6 +20,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import com.callumcarmicheal.OpenGL.GLUT;
 import com.callumcarmicheal.OpenGL.Util;
 import com.callumcarmicheal.solar.objects.IPlanet;
+import com.callumcarmicheal.solar.render.Camera;
 
 
 /*
@@ -27,7 +29,8 @@ import com.callumcarmicheal.solar.objects.IPlanet;
  * @date 02/07/2015
  */
 public class Main {
-
+	
+	public static Main instance;
 	
 	// Variables
 	boolean disposing = false;
@@ -36,12 +39,14 @@ public class Main {
 	TrueTypeFont renderFont;
 	boolean fontLoaded = false;
 	boolean renderInfo = true;
+	Camera renderCamera;
+	boolean grabMouse = false;
 	
 	// Animation -> Simulation Variables
-	float HourOfDay = 0.0f;
-	float DayOfYear = 0.0f;
-	int NumberOfYear = Calendar.getInstance().get(Calendar.YEAR);;
-	float AnimateIncrement = 24.0f;
+	float HourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY); // Set to 0.0f if problem occurs
+	float DayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR); // Set to 0.0f if problem occurs
+	int NumberOfYear = Calendar.getInstance().get(Calendar.YEAR);;		// Set to currentYear (MANUALLY) if problem occurs
+	public float AnimateIncrement = 24.0f; 									// 24 hour per tick
 	String simOutput;
 	List<IPlanet> simObjects;
 	
@@ -52,11 +57,13 @@ public class Main {
 		
 		// Check if our keyboard listener is created and then execute commands from it
 		if(Keyboard.isCreated()) {
-			// Fetch all pressed keys
+			// HOLD KEYS
+			renderCamera.keyboardUpdate(false, false);
+			
+			// Fetch all pressed keys (Press once)
 			while(Keyboard.next()) {
 				// Check if key is pressed
 				if(Keyboard.getEventKeyState()) { /* KEY PRESSED */
-					
 					if(Keyboard.getEventKey() == Keyboard.KEY_R) {
 						if ( singleStep ) {			
 							// If ending single step mode
@@ -87,12 +94,18 @@ public class Main {
 						AnimateIncrement /= 2.0f;
 					}
 					
+					if(Keyboard.getEventKey() == Keyboard.KEY_LEFT) {
+						// Toggle mouse grab
+						this.grabMouse = !this.grabMouse;
+					}
+					
 					if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
 						this.disposing = true;
 					}
 					
+					renderCamera.keyboardUpdate(true, true);
 				} else /* KEY RELEASED*/ {
-					
+					renderCamera.keyboardUpdate(true, false);
 				}
 			}
 
@@ -107,10 +120,33 @@ public class Main {
 		
 	}
 	
+	void mouseListener() {
+	
+		// Check if our mouse listener is created and then execute commands from it
+		if(Mouse.isCreated()) {
+			// Set Grabbed state
+			Mouse.setGrabbed(this.grabMouse);
+			
+			if(grabMouse){
+				// Now do everything we need to
+				renderCamera.mouseUpdate();
+				
+				// Reset mouse to 0, 0
+				Mouse.setCursorPosition(0, 0);
+			}
+		} else /* Try to create mouse listener */ {
+			try {
+				Mouse.create();
+			} catch (LWJGLException e) {
+				System.err.println("Failed to create LWJGL Mouse Listener");
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	void Animate() {
 		// Clear the rendering output/buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		
 		
 		//GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_LINE );
 		//GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_FILL );
@@ -125,12 +161,15 @@ public class Main {
 	        HourOfDay = HourOfDay - ((int)(HourOfDay/24))*24;
 	        DayOfYear = DayOfYear - ((int)(DayOfYear/365))*365;    
 	        
-	        // Set simulation output
-	        simOutput =  (
-	        		"Hour : " + HourOfDay + "\n" + 
-	        		"Day  : " + DayOfYear + "\n" + 
-	        		"Year : " + NumberOfYear
-	        );
+       		this.simOutput = (	
+       			"Creators: CallumC, Bastien Fremondiere" + "\n" + 
+           		"Hour    : " + HourOfDay + "\n" + 
+           		"Day     : " + DayOfYear + "\n" + 
+           		"Year    : " + NumberOfYear + "\n" + 
+           		"H Inc   : " + AnimateIncrement + "\n" + 
+           		"Spin    : " + spinMode + "\n" + 
+           		"H Ren   : " + HardRender + "\n"
+           	);
 		}
 		
 		// Clear the current matrix (Model View)
@@ -142,7 +181,7 @@ public class Main {
 		// Rotate the plane of the elliptic
 		// (rotate the model's plane about the x axis by fifteen degrees) 
 		GL11.glRotatef( 15.0f, 1.0f, 0.0f, 0.0f );
-		
+
 		
 		// Hard Render = Render it using raw code no Planet Objects
 		// 
@@ -232,6 +271,8 @@ public class Main {
            		GL11.glDisable(GL11.GL_BLEND);
         	} GL11.glPopMatrix();
         	
+        	
+    		renderCamera.useCamera();
         }  //   */
 		
 		
@@ -243,13 +284,11 @@ public class Main {
 		// REQUEST ANOTHER BUFFER TO CREATED FOR ANIMATION PURPOSE
 	}
 	
-	
-	void render_VINGARDIUM_LEVIOSA() {
-		
-	}
-	
+	// This was the original camera code xD
+	void render_VINGARDIUM_LEVIOSA() {}
 	
 	// Initialise OpenGL's rendering mode
+	@Deprecated
 	void OpenGLInit() {
 		GL11.glShadeModel( GL11.GL_FLAT );
 		GL11.glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
@@ -272,10 +311,11 @@ public class Main {
 		// View port uses whole number
 		aspectRatio = (float)w/(float)h;
 		
-		// Setup the projection view matrix 
+		// OLD RENDERING SETTINGS
+		/*/ Setup the projection view matrix 
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GLU.gluPerspective( FOV, aspectRatio, zNear, zFar);
+		GLU.gluLookAt( FOV, aspectRatio, zNear, zFar);
 		
 		// Select the Model view Matrix
 		GL11.glMatrixMode (GL11.GL_MODELVIEW);
@@ -283,10 +323,12 @@ public class Main {
 		
 		// Fix scale-ing of objects and stuff?
 		GL11.glScissor(0, 0, w, h);
-		GL11.glViewport(0, 0, w, h);
+		GL11.glViewport(0, 0, w, h); */
+		
+		renderCamera = new Camera(FOV, aspectRatio, zNear, zFar);
 	}
 	
-	public void main(String[] args) {
+	public void Init(String[] args) {
 		boolean displayShown = false;
 		
 		//1  Create and setup Display
@@ -302,10 +344,13 @@ public class Main {
 			Display.create();
 			
 			Keyboard.create(); // Create keyboard listener?
+			Mouse.create();
 			
 			displayShown = true;
 			
 			if(displayShown) {
+				
+				Display.setTitle("LOADING RESOURCES (Loading Font [res/fonts/constan.ttf])");
 				
 				// load font from a .ttf file
 				try {
@@ -319,6 +364,7 @@ public class Main {
 					e.printStackTrace();
 				}
 				
+				Display.setTitle("LOADING RESOURCES (Loading planets)");
 				
 				//if(!HardRender) {
 					simObjects = new ArrayList<IPlanet>();
@@ -328,9 +374,11 @@ public class Main {
 					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() );
 				//}
 				
+				Display.setTitle("LOADING RESOURCES (Setting OPENGL settings)");
 				
 				// Initialise OpenGL
-				OpenGLInit();
+				//OpenGLInit();
+				onWindowResize();
 			}
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -338,22 +386,30 @@ public class Main {
 		
 		if(displayShown) {
 			
+			Display.setTitle("Solar System Simulation");
+			
 			// Start Game loop
 			while (!disposing){
-				// Do calculations
-				if(Display.wasResized())
-					onWindowResize();
-				
-				// Take keyboard Input
-				keyboardListener();
-				
-				// Render
-				Animate();
-				
-				// Check if close was requested and Update Display
-				Display.update();
 				if(!disposing)
 					disposing = Display.isCloseRequested();
+				
+				// Now disposing has been updated, check if we are disposing
+				// if not lets do our logic, if not lets skip it (JUST THIS ONCE OKAY!)
+				if(!disposing) {
+					// Do calculations
+					if(Display.wasResized())
+						onWindowResize();
+					
+					// Take the Input
+					mouseListener();
+					keyboardListener();
+					
+					// Render
+					Animate();
+					
+					// Check if close was requested and Update Display
+					Display.update();
+				}
 			}
 		} else {
 			System.out.println("Failed to init the display output");

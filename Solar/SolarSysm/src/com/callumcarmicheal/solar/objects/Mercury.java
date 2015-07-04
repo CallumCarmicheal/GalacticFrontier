@@ -12,26 +12,31 @@ public class Mercury extends IPlanet {
 		planetName = "Mercury";
 		orbitIndex = 1;
 		size = 1;
-		Color = new Vector3f(105f, 79f, 6f);
+		Color = new Vector3f(201, 131, 18);
 		//subplanets.add(new Planet("", 3, 0, 0, new Vector3f(1.0f, 1.0f, 1.0f), this, null, 4 ));
-		dayMultiplier = 1;
-		subplanets_Multiplier = 4;
-		subplanets_offset = 0.7f;
+		subPlanets_Multiplier = 4;
+		subPlanets_offset = 0.7f;
 		
-		dayMultiplier = ((58 * 7) + (18) + (30 / 60));
-		
+		//printDebug = true;
 	}
 	
 	
 	@Override
 	public float getDay(float DayofYear) {
-		return (DayofYear + (((58 * 7) + (18) + (30 / 60)) * 24));
-	}
-	
-	@Override
-	public float getHour(float HourOfDay) {
-		System.out.println("TEST");
-		return (HourOfDay + ((58 * 7) + (18) + (30 / 60)));
+		//return (DayofYear * (((58 * 7) + (18) + (30 / 60)) / 24)); (CANT REMEMBER HOW I GOT THIS)
+		
+		/* The Algorithm works a-bit like this
+		 * 
+		 * 	Rotation = 
+		 * 		Day of Year (earths day of year 1 - 365)
+		 * 			Multiplied by 
+		 * 				57 (-1 for earth, mercury = 58) days 
+		 * 				add 15 / 10 to get Hours in day form
+		 * 				add 30 / 100 to get Minutes in day form		
+		 * 				Divided by 10 to slow it down to real time
+		 */
+		
+		return (DayofYear * ((57) + (15 / 10) + (30 / 100))) / 10;
 	}
 	
 	

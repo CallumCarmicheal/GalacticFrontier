@@ -12,11 +12,10 @@ public class Sun extends IPlanet {
 		orbitIndex = 0;
 		size = 10;
 		Color = new Vector3f(1f, 1f, 0f);
-		subplanets = null;
-		subplanets_Multiplier = 4;
-		dayMultiplier = 1;
-		subplanets_Multiplier = 4;
-		subplanets_offset = 0.7f;
+		subPlanets = null;
+		subPlanets_Multiplier = 4;
+		subPlanets_Multiplier = 4;
+		subPlanets_offset = 0.7f;
 	}
 	
 	

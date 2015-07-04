@@ -3,25 +3,30 @@ package com.callumcarmicheal.solar.maths;
 public class Vector3f {
 	
 	// Same as RGB but dif context
-	public float X;
-	public float Y;
-	public float Z;
+	public float x;
+	public float y;
+	public float z;
 	
 	
 	// Same as XYZ but dif context
-	public float R;
-	public float G;
-	public float B;
+	public float r;
+	public float g;
+	public float b;
 	
 	
 	public Vector3f(float f1, float f2, float f3) {
-		this.X = f1;
-		this.R = f1;
+		this.x = f1;
+		this.r = f1;
 		
-		this.Y = f2;
-		this.G = f2;
+		this.y = f2;
+		this.g = f2;
 		
-		this.Z = f3;
-		this.B = f3;
+		this.z = f3;
+		this.b = f3;
+	}
+	
+	@Override
+	public String toString(){ 
+		return "Vector3f ( " + x + " | " + y + " | " + z + " )";
 	}
 }
