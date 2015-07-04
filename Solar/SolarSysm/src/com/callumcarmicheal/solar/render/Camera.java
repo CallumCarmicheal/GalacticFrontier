@@ -23,17 +23,21 @@ import com.callumcarmicheal.solar.maths.Vector4f;
 // UPDATE : AT 01:15 I DECIDED I WANT GL11.glBAH(); BACK
 
 public class Camera {
-
+	
 	private Vector3f loc;
 	private Vector3f rot;
 	private Vector4f renderSettings;
+	public boolean ISREADY = false;
+	
 	
 	public Vector3f getLocation() { return this.loc; }
 	public Vector3f getRotation() { return this.rot; }
 	public Vector4f getRenderSettings() { return this.renderSettings; }
 	
 	public void setRenderSettings(Vector4f settings) { this.renderSettings = settings; }
-	public void setRenderSettings(float FOV, float ASPECT, float vNEAR, float vFAR) { setRenderSettings(new Vector4f(FOV, ASPECT, vNEAR, vFAR)); }
+	public void setRenderSettings(float FOV, float ASPECT, float vNEAR, float vFAR) { setRenderSettings(new Vector4f(FOV, ASPECT, vNEAR, vFAR)); initProjection(); }
+	
+	
 	
 	public Camera(Vector4f renderSettings) {
 		this.renderSettings = renderSettings;
@@ -57,7 +61,6 @@ public class Camera {
 		int w = Display.getWidth();
 		int h = Display.getHeight();
 		
-		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		GLU.gluPerspective(
@@ -68,26 +71,35 @@ public class Camera {
 		);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
-		GL11.glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-		
+		GL11.glShadeModel(GL11.GL_FLAT);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		
 		// Fix scale-ing of objects and stuff?
-		//GL11.glScissor(0, 0, w, h);
-		//GL11.glViewport(0, 0, w, h);
+		GL11.glScissor(0, 0, w, h);
+		GL11.glViewport(0, 0, w, h);
 		
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
 		System.out.println("OK CAMERA STARTED?");
+		
+		ISREADY = true;
 	}
 	
-	public void useCamera() {
+	// Does not work, and i have no clue why ;(
+	public void useCamera() { 
 		GL11.glLoadIdentity();
-		GL11.glRotatef(rot.x, 0, 0, 0);
-		GL11.glRotatef(rot.y, 0, 0, 0);
-		GL11.glRotatef(rot.z, 0, 0, 0);
+		
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glRotatef(rot.x, 1, 0, 0);
+		GL11.glRotatef(rot.y, 0, 1, 0);
+		GL11.glRotatef(rot.z, 0, 0, 1);
 		GL11.glTranslatef(loc.x, loc.y, loc.z);
 		
-		System.out.println("OK I MOVE : " + loc.toString());
+		//System.out.println(
+		//		"OK I MOVE : \n    " + 
+		//				loc.toString() + "    " + rot.toString() + "\n"
+		//);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
 	
 	public void moveZ(float amount) {
@@ -105,25 +117,41 @@ public class Camera {
 	
 	public void keyboardUpdate(boolean isEvent, boolean KBEventState) {
 		if(isEvent) { /* PRESS ONCE STUFF */
-			if(KBEventState) { } else { }
+			if(KBEventState) { /* PRESSED */ 
+				if((Keyboard.getEventKey() == Keyboard.KEY_W)) {
+					moveZ(0.001f);
+				}
+				
+				if((Keyboard.getEventKey() == Keyboard.KEY_NUMPAD4)) {
+					rotateX(1f);
+				}
+				
+				if((Keyboard.getEventKey() == Keyboard.KEY_NUMPAD6)) {
+					rotateX(-1f);
+				}
+				
+				if((Keyboard.getEventKey() == Keyboard.KEY_NUMPAD8)) {
+					rotateY(1f);
+				}
+				
+				if((Keyboard.getEventKey() == Keyboard.KEY_NUMPAD2)) {
+					rotateY(-1f);
+				}
+			} else { /* RELEASED */ }
 		} else { /* HOLDABLE KEYS */
-			
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				moveZ(1f);
-			}
+	
 		}
 	}
 	
 	// I have never used mouse input before, only Keyboard
 	public void mouseUpdate() {
-		int x = Mouse.getX(); // will return the X coordinate on the Display.
-		int y = Mouse.getY(); // will return the Y coordinate on the Display.
+		int x = (Mouse.getX() - (Display.getWidth() / 2)); // will return the X coordinate on the Display.
+		int y = (Mouse.getY() - (Display.getWidth() / 2)); // will return the Y coordinate on the Display.
 		
 		//System.out.println("MOUSE (" + x + " | " + y + ")");
 		
-		moveX(x / 10);
-		moveZ(y / 10);
+		rotateX(x * 0.05f);
+		rotateY(x * 0.05f);
 	}
 	
 }

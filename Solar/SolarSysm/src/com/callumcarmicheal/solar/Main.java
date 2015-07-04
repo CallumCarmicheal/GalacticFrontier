@@ -128,11 +128,14 @@ public class Main {
 			Mouse.setGrabbed(this.grabMouse);
 			
 			if(grabMouse){
+				
 				// Now do everything we need to
 				renderCamera.mouseUpdate();
 				
-				// Reset mouse to 0, 0
-				Mouse.setCursorPosition(0, 0);
+				Mouse.setCursorPosition(
+					(Display.getWidth() / 2),
+					(Display.getHeight() / 2) - 112
+				);
 			}
 		} else /* Try to create mouse listener */ {
 			try {
@@ -238,45 +241,45 @@ public class Main {
         if(fontLoaded && renderInfo) {
         	//renderFont.drawString(0, 0, "UNICORNS BECAUSE THERE MANLY!")
         	GL11.glPushMatrix(); {
-        		
         		GL11.glEnable(GL11.GL_BLEND);
         		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         		
         		GL11.glMatrixMode(GL11.GL_PROJECTION);
-        		GL11.glPushMatrix();
-        		GL11.glLoadIdentity();
-        		GL11.glOrtho(0, 800, 600, 0, 1, -1);
-        		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        		GL11.glDisable(GL11.GL_CULL_FACE);
-        		GL11.glDisable(GL11.GL_DEPTH_TEST); 
-        		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        		GL11.glLoadIdentity();
-
-        		int diff = 15;
-           		renderFont.drawString(10, diff * 0, "Creators: CallumC, Bastien Fremondiere", Color.red);
-           		renderFont.drawString(10, diff * 1, "Hour    : " + HourOfDay, Color.cyan);
-           		renderFont.drawString(10, diff * 2, "Day     : " + DayOfYear, Color.cyan);
-           		renderFont.drawString(10, diff * 3, "Year    : " + NumberOfYear, Color.cyan);
-           		renderFont.drawString(10, diff * 4, "H Inc   : " + AnimateIncrement, Color.cyan);
-           		renderFont.drawString(10, diff * 5, "Spin    : " + spinMode, Color.cyan);
-           		renderFont.drawString(10, diff * 6, "H Ren   : " + HardRender, Color.cyan);
-           		
-           		// for example 
-           		GL11.glEnable(GL11.GL_DEPTH_TEST);
-           		GL11.glEnable(GL11.GL_CULL_FACE);
-           		GL11.glMatrixMode(GL11.GL_PROJECTION);
-           		GL11.glPopMatrix();
+        		GL11.glPushMatrix(); {
+	        		GL11.glLoadIdentity();
+	        		GL11.glOrtho(0, 800, 600, 0, 1, -1);
+	        		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+	        		GL11.glDisable(GL11.GL_CULL_FACE);
+	        		GL11.glDisable(GL11.GL_DEPTH_TEST); 
+	        		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+	        		GL11.glLoadIdentity();
+	
+	        		int diff = 15;
+	           		renderFont.drawString(10, diff * 0, "Creators: CallumC, Bastien Fremondiere", Color.red);
+	           		renderFont.drawString(10, diff * 1, "Hour    : " + HourOfDay, Color.cyan);
+	           		renderFont.drawString(10, diff * 2, "Day     : " + DayOfYear, Color.cyan);
+	           		renderFont.drawString(10, diff * 3, "Year    : " + NumberOfYear, Color.cyan);
+	           		renderFont.drawString(10, diff * 4, "H Inc   : " + AnimateIncrement, Color.cyan);
+	           		renderFont.drawString(10, diff * 5, "Spin    : " + spinMode, Color.cyan);
+	           		renderFont.drawString(10, diff * 6, "H Ren   : " + HardRender, Color.cyan);
+	           		
+	           		// Just leave the matrix mode, it knows where you live (it will blow up the software)
+	           		// FINE ILL LEAVE YOU ALONE, JESUS!
+	           		GL11.glEnable(GL11.GL_DEPTH_TEST);
+	           		GL11.glEnable(GL11.GL_CULL_FACE);
+	           		GL11.glMatrixMode(GL11.GL_PROJECTION);
+        		} GL11.glPopMatrix();
            		GL11.glMatrixMode(GL11.GL_MODELVIEW);
            		
            		GL11.glDisable(GL11.GL_BLEND);
         	} GL11.glPopMatrix();
         	
         	
-    		renderCamera.useCamera();
         }  //   */
 		
-		
-		// LWJGL ALREADY HANDLES OPENGL FLUSH's AND BUFFER SWAPS (flushes ?)
+        renderCamera.useCamera();
+        
+		// LWJGL ALREADY HANDLES OPENGL FLUSH's AND BUFFER SWAPS (flushes ?) ill leave it in to be safe
 		GL11.glFlush();
 		
 		
@@ -325,7 +328,11 @@ public class Main {
 		GL11.glScissor(0, 0, w, h);
 		GL11.glViewport(0, 0, w, h); */
 		
-		renderCamera = new Camera(FOV, aspectRatio, zNear, zFar);
+		if(renderCamera == null){} else {
+			if(renderCamera.ISREADY) {
+				renderCamera.setRenderSettings(FOV, aspectRatio, zNear, zFar);
+			}
+		}
 	}
 	
 	public void Init(String[] args) {
@@ -349,7 +356,6 @@ public class Main {
 			displayShown = true;
 			
 			if(displayShown) {
-				
 				Display.setTitle("LOADING RESOURCES (Loading Font [res/fonts/constan.ttf])");
 				
 				// load font from a .ttf file
@@ -375,16 +381,29 @@ public class Main {
 				//}
 				
 				Display.setTitle("LOADING RESOURCES (Setting OPENGL settings)");
-				
-				// Initialise OpenGL
-				//OpenGLInit();
-				onWindowResize();
 			}
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 		
 		if(displayShown) {
+			// Initialise OpenGL
+			//OpenGLInit();
+			{
+				int w = Display.getWidth();
+				int h = Display.getHeight();
+				float FOV = 60.0f, zNear = 1.0f, zFar = 100.0f;
+				float aspectRatio;
+				
+				// ??????
+				h = (h == 0) ? 1 : h;
+				w = (w == 0) ? 1 : w;
+				
+				// View port uses whole number
+				aspectRatio = (float)w/(float)h;
+				
+				renderCamera = new Camera(FOV, aspectRatio, zNear, zFar);
+			}
 			
 			Display.setTitle("Solar System Simulation");
 			
@@ -406,7 +425,7 @@ public class Main {
 					
 					// Render
 					Animate();
-					
+
 					// Check if close was requested and Update Display
 					Display.update();
 				}
