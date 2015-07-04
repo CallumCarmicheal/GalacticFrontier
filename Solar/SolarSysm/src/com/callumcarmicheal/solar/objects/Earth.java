@@ -13,13 +13,13 @@ public class Earth extends IPlanet {
 		
 		planetName = "Earth";
 		orbitIndex = 3;
-		size = 4;
+		size = 1;
 		Color = new Vector3f(0f, 0f, 1f);
 		subPlanets.add(
 			new Planet(
 				"Earth (Moon)", 
 				3, 
-				0, 
+				1.2223321763038349416210803742011e-26f, 
 				new Vector3f(1.0f, 1.0f, 1.0f), 
 				this, 
 				null,
@@ -27,9 +27,11 @@ public class Earth extends IPlanet {
 			)
 		);
 		subPlanets_Multiplier = 4;
-		subPlanets_offset = 0.7f;
+		subPlanets_offset = 0.07f;
 		
 		printDebug = false;
+		
+		distanceFromSun = 1;
 		
 		// Lets try to add a sub planet
 		try {

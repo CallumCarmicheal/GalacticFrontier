@@ -136,7 +136,7 @@ public class Main {
 				
 				Mouse.setCursorPosition(
 					(Display.getWidth() / 2),
-					(Display.getHeight() / 2) - 112
+					(Display.getHeight() / 2)
 				);
 			}
 		} else /* Try to create mouse listener */ {
@@ -152,6 +152,11 @@ public class Main {
 	void Animate() {
 		// Clear the rendering output/buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		 
+		//GL11.glEnable(GL11.GL_BLEND);
+		//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		Util.fixCamera();
 		
         GL11.glPushMatrix();
         	//GL11.glLoadIdentity();
@@ -281,7 +286,7 @@ public class Main {
            		GL11.glDisable(GL11.GL_BLEND);
         	} GL11.glPopMatrix();
         	
-        	
+        	GL11.glTranslatef(0, 0, -20);
         }  // */
         
 		// LWJGL ALREADY HANDLES OPENGL FLUSH's AND BUFFER SWAPS (flushes ?) ill leave it in to be safe
@@ -380,9 +385,10 @@ public class Main {
 				//if(!HardRender) {
 					simObjects = new ArrayList<IPlanet>();
 					
-					simObjects.add( new com.callumcarmicheal.solar.objects.Sun() );
+					simObjects.add( new com.callumcarmicheal.solar.objects.Sun() 	 );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
-					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() );
+					//simObjects.add( new com.callumcarmicheal.solar.objects.Venus() 	 );
+					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() 	 );
 				//}
 				
 				Display.setTitle("LOADING RESOURCES (Setting OPENGL settings)");
@@ -393,16 +399,15 @@ public class Main {
 		
 		if(displayShown) {
 			// Initialise OpenGL
-			//OpenGLInit();
 			{
 				int w = Display.getWidth();
 				int h = Display.getHeight();
-				float FOV = 60.0f, 
-						zNear = 0.00000000000000000000000000000000000000000001f, //TODO : fix clipping range
-						zFar = 1000.0f;
+				float 
+					FOV = 60.0f, 
+					zNear = 0.00000000000000000000000000000000000001f, //TODO : fix clipping range
+					zFar = 100000000000000000000000000000000000000.0f;
 				float aspectRatio;
 				
-				// ??????
 				h = (h == 0) ? 1 : h;
 				w = (w == 0) ? 1 : w;
 				

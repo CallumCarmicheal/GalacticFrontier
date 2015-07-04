@@ -1,5 +1,8 @@
 package com.callumcarmicheal.solar.render;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -22,6 +25,13 @@ import com.callumcarmicheal.solar.maths.Vector4f;
 
 // UPDATE : AT 01:15 I DECIDED I WANT GL11.glBAH(); BACK
 
+
+/*
+ * (CALLUMC) 
+ * I am leaving the camera controls because i cannot figure them out ;(
+ * I'll leave it to the community or another dev to help out with, but for now i have given up!
+ * [04/07/2015 | 15:03]
+ */
 public class Camera {
 
 	private Vector3f position;
@@ -54,8 +64,8 @@ public class Camera {
 	public Camera(Vector4f renderSettings) {
 		this.renderSettings = renderSettings;
 
-		position = new Vector3f(0, 0, 0);
-		rotation = new Vector3f(0, 0, 0);
+		position = new Vector3f(0.00001f, 0.00001f, 0.00001f);
+		rotation = new Vector3f(0.00001f, 0.00001f, 0.00001f);
 
 		initProjection();
 	}
@@ -86,12 +96,9 @@ public class Camera {
 		GL11.glScissor(0, 0, w, h);
 		GL11.glViewport(0, 0, w, h);
 
-		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-
 		ISREADY = true;
 	}
 
-	// Does not work, and i have no clue why ;(
 	public void useCamera() {
 		// GL11.glLoadIdentity();
 
@@ -101,21 +108,12 @@ public class Camera {
 			GL11.glRotatef(rotation.y, 0, 1, 0);
 			GL11.glRotatef(rotation.z, 0, 0, 1);
 			GL11.glTranslatef(position.x, position.y, position.z);
-
-			// System.out.println(
-			// "OK I MOVE : \n    " +
-			// loc.toString() + "    " + rot.toString() + "\n"
-			// );
 		}
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-		// reset the cords so they dont mess with our next rotation call
-		position.x = 0;
-		position.y = 0;
-		position.z = 0;
-		rotation.x = 0;
-		rotation.y = 0;
-		rotation.z = 0;
+		// If the cords get messed up (like leak through renders, uncomment this)
+		//position.x = 0; position.y = 0; position.z = 0; 
+		//rotation.x = 0; rotation.y = 0; rotation.z = 0;
 	}
 
 	// moves the camera forward relative to its current rotation (rot.y)
@@ -160,6 +158,42 @@ public class Camera {
 		position.x += amount * Math.cos(Math.toRadians(rotation.y));
 	}
 
+	public void lookLeft(float amount) {
+		rotation.y -= amount;
+	}
+	
+	public void lookRight(float amount) {
+		rotation.y += amount;
+	}
+	
+
+	public void move(float amount, float direction) {
+	    position.z += amount * Math.sin(Math.toRadians(rotation.y + 90 * direction));
+	    position.x += amount * Math.cos(Math.toRadians(rotation.y + 90 * direction));
+	}
+	
+	public Vector3f vRotateX(Vector3f v, double a) {
+		return new Vector3f(
+			v.x,
+			(float) ( v.y*Math.cos(a) - v.z*Math.sin(a) ),
+			(float) ( v.y*Math.sin(a) + v.z*Math.cos(a) )
+		);
+	}
+	
+	public void vRotateY(double a) {
+		rotation.x += (float) ( rotation.x * Math.cos(a) + rotation.z*Math.sin(a) );
+ 
+		rotation.z -= (float) ( -rotation.x * Math.sin(a) + rotation.z*Math.cos(a) );
+	}
+	
+	public Vector3f vRotateZ(Vector3f v, double a) {
+		return new Vector3f(
+			(float) ( v.x*Math.cos(a) - v.y*Math.sin(a) ),
+			(float) ( v.x*Math.sin(a) + v.y*Math.cos(a) ),
+			v.z
+		);
+	}
+	
 	public void rotateX(float amount) {
 		rotation.x += amount * Math.sin(Math.toRadians(position.y));
 		rotation.z += amount * Math.cos(Math.toRadians(position.y));
@@ -168,7 +202,17 @@ public class Camera {
 	public void rotateY(float amount) {
 		rotation.y += amount;
 	}
-
+	
+	public void rotateZ(float amount) {
+		//rotation.x += amount * Math.sin(Math.toRadians(position.y));
+		rotation.z += amount * Math.cos(Math.toRadians(position.y));
+	}
+	
+	public void RANDOMTHING(float amount) {
+		rotation.z -= amount * Math.sin(Math.toRadians(position.y));
+		rotation.y += amount * Math.cos(Math.toRadians(position.x));
+	}
+	
 	public void keyboardUpdate(boolean isEvent, boolean KBEventState) {
 		if (isEvent) { /* PRESS ONCE STUFF */
 			if (KBEventState) {
@@ -177,66 +221,78 @@ public class Camera {
 				// Released
 			}
 		} else { /* HOLDABLE KEYS */
+			
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				// moveZ(0.01f);
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					walkForward(0.1f);
+					walkForward(1f);
 				} else {
-					walkForward(0.01f);
+					walkForward(0.1f);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					walkBackwards(0.1f);
+					walkBackwards(1f);
 				} else {
-					walkBackwards(0.01f);
+					walkBackwards(0.1f);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					strafeRight(1f);
+					lookRight(10f);
 				} else {
-					strafeRight(0.1f);
+					lookRight(1f);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					strafeLeft(1f);
+					lookLeft(10f);
 				} else {
-					strafeLeft(0.1f);
+					lookLeft(1f);
 				}
 			}
 
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_O)) { 
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateX(-4f);
+					rotateZ(4f);
 				} else {
-					rotateX(-1f);
+					rotateZ(0.4f);
 				}
 			}
 
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_P)) { 
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateX(4f);
+					rotateZ(-4f);
 				} else {
-					rotateX(1f);
+					rotateZ(-0.4f);
 				}
 			}
+			
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) { 
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+					RANDOMTHING(-1f);
+				} else {
+					RANDOMTHING(1f);
+				}
+			}
+			
+			
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateY(-4f);
-				} else {
 					rotateY(-1f);
+				} else {
+					rotateY(-0.1f);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateY(4f);
+					rotateY(1f);
 				} else {
 					rotateY(1f);
 				}
@@ -246,7 +302,7 @@ public class Camera {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					moveY(1);
 				} else {
-					moveY(0.01f);
+					moveY(0.1f);
 				}
 			}
 
@@ -254,25 +310,36 @@ public class Camera {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					moveY(-1);
 				} else {
-					moveY(-0.01f);
+					moveY(-0.1f);
 				}
-			}
+			} 
 		}
 	}
 
 	// I have never used mouse input before, only Keyboard
 	public void mouseUpdate() {
-		int x = (Mouse.getX() - (Display.getWidth() / 2)); // will return the X
-															// coordinate on the
-															// Display.
-		int y = (Mouse.getY() - (Display.getWidth() / 2)); // will return the Y
-															// coordinate on the
-															// Display.
-
-		// System.out.println("MOUSE (" + x + " | " + y + ")");
-
-		rotateY(x * 0.05f);
-		rotateX(x * 0.05f);
+		/*
+		float mouseSpeed = 0.01f;
+		
+		float x = (mouseSpeed * System.nanoTime() * (Display.getWidth()/2 - Mouse.getX())); 							
+		float y = (mouseSpeed * System.nanoTime() * (Display.getHeight()i()/2 - Mouse.getY())); 	
+		
+		
+		x = (y * 0.22f + 25f); // fix calculations with display
+		y = (y * 0.22f + 25f); // fix calculations with display
+		
+		x = x - 0.3600006f; // trim it to 0 (left over from calculations)
+		y = y - 0.3600006f; // trim it to 0 (left over from calculations)
+		
+		
+		//System.out.println( "\n\n\n" +
+		//		"MOUSE     (" + (x) + " | " + (y) + ") \n + " + 
+		//		"DISP      (" + Display.getWidth()/2 + " | " + Display.getHeight()/2 + ")"
+		//);
+		
+		rotateY(x);
+		lookLeft(y);
+		*/
 	}
 
 }
