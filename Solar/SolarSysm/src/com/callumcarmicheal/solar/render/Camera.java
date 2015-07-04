@@ -157,14 +157,6 @@ public class Camera {
 		position.z += amount * Math.sin(Math.toRadians(rotation.y));
 		position.x += amount * Math.cos(Math.toRadians(rotation.y));
 	}
-
-	public void lookLeft(float amount) {
-		rotation.y -= amount;
-	}
-	
-	public void lookRight(float amount) {
-		rotation.y += amount;
-	}
 	
 
 	public void move(float amount, float direction) {
@@ -172,45 +164,17 @@ public class Camera {
 	    position.x += amount * Math.cos(Math.toRadians(rotation.y + 90 * direction));
 	}
 	
-	public Vector3f vRotateX(Vector3f v, double a) {
-		return new Vector3f(
-			v.x,
-			(float) ( v.y*Math.cos(a) - v.z*Math.sin(a) ),
-			(float) ( v.y*Math.sin(a) + v.z*Math.cos(a) )
-		);
-	}
-	
-	public void vRotateY(double a) {
-		rotation.x += (float) ( rotation.x * Math.cos(a) + rotation.z*Math.sin(a) );
- 
-		rotation.z -= (float) ( -rotation.x * Math.sin(a) + rotation.z*Math.cos(a) );
-	}
-	
-	public Vector3f vRotateZ(Vector3f v, double a) {
-		return new Vector3f(
-			(float) ( v.x*Math.cos(a) - v.y*Math.sin(a) ),
-			(float) ( v.x*Math.sin(a) + v.y*Math.cos(a) ),
-			v.z
-		);
-	}
-	
-	public void rotateX(float amount) {
-		rotation.x += amount * Math.sin(Math.toRadians(position.y));
-		rotation.z += amount * Math.cos(Math.toRadians(position.y));
-	}
-
-	public void rotateY(float amount) {
-		rotation.y += amount;
-	}
-	
 	public void rotateZ(float amount) {
 		//rotation.x += amount * Math.sin(Math.toRadians(position.y));
 		rotation.z += amount * Math.cos(Math.toRadians(position.y));
 	}
 	
-	public void RANDOMTHING(float amount) {
-		rotation.z -= amount * Math.sin(Math.toRadians(position.y));
-		rotation.y += amount * Math.cos(Math.toRadians(position.x));
+	public void rotateY(float amount) {
+		rotation.y += amount;
+	}
+	
+	public void rotateX(float amount) {
+		rotation.x += amount;
 	}
 	
 	public void keyboardUpdate(boolean isEvent, boolean KBEventState) {
@@ -241,17 +205,17 @@ public class Camera {
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					lookRight(10f);
+					strafeRight(10f);
 				} else {
-					lookRight(1f);
+					strafeRight(1f);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					lookLeft(10f);
+					strafeLeft(10f);
 				} else {
-					lookLeft(1f);
+					strafeLeft(1f);
 				}
 			}
 
@@ -271,16 +235,21 @@ public class Camera {
 				}
 			}
 			
-			
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) { 
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					RANDOMTHING(-1f);
+					rotateX(-1f);
 				} else {
-					RANDOMTHING(1f);
+					rotateX(-0.1f);
 				}
 			}
 			
-			
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+					rotateX(1f);
+				} else {
+					rotateX(0.1f);
+				}
+			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -340,6 +309,9 @@ public class Camera {
 		rotateY(x);
 		lookLeft(y);
 		*/
+		
+		float x = Mouse.getDX();
+		float y = Mouse.getDY();
 	}
 
 }

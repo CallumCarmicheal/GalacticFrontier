@@ -190,7 +190,7 @@ public abstract class IPlanet {
 			if (Color != null) {
 				GL11.glColor3f(Color.r, Color.g, Color.b);
 			}
-			GLUT.WireSphere3D(1 * this.size / SizeMultiplier, 15, 15);
+			GLUT.WireSphere3D(1 * this.size / SizeMultiplier + 5, 15, 15);
 		} else if (BasePlanet == null) {
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(0.0f, 0.0f, -8.0f);

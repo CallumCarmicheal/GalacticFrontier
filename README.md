@@ -32,7 +32,7 @@ Progress      | Thing To do        | Type
 NO            | Minecraft 3d World | Rendering
 NO            | Minecraft Galaxy   | Rendering
 NO            | Galaxy Exploration | Rendering/Sim
-No            | 3d Navigation      | Rendering
+WIP           | 3d Navigation      | Rendering
 
 
 # Controls
@@ -56,4 +56,6 @@ ArDOWN | Rotate camera downwards
 ArLEFT | Rotate camera left
 ArRIGHT| Rotate camera right (Yeah who would of guessed?)
 MOUSE  | Rotate camera on XY
+O      | Rotate the scene left
+P      | Rotate the scene right
 ESCAPE | Close Application
