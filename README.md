@@ -32,7 +32,7 @@ Progress      | Thing To do        | Type
 NO            | Minecraft 3d World | Rendering
 NO            | Minecraft Galaxy   | Rendering
 NO            | Galaxy Exploration | Rendering/Sim
-WIP           | 3d Navigation      | Rendering
+DONE          | 3d Navigation      | Rendering
 
 
 # Controls
