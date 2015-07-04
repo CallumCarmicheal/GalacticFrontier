@@ -146,39 +146,40 @@ public class Camera {
 				* (float) Math.cos(Math.toRadians(rotation.y + 90));
 	}
 
-	
-	  public void moveZ(float amount) { position.z += amount *
-	  Math.sin(Math.toRadians(rotation.y + 90)); position.x += amount *
-	  Math.cos(Math.toRadians(rotation.y * 90)); }
-	  
-	  public void moveY(float amount) {
-		  position.y += amount;
-	  }
-	  
-	  public void moveX(float amount) { position.z += amount *
-	  Math.sin(Math.toRadians(rotation.y)); position.x += amount *
-	  Math.cos(Math.toRadians(rotation.y)); }
-	 
+	public void moveZ(float amount) {
+		position.z += amount * Math.sin(Math.toRadians(rotation.y + 90));
+		position.x += amount * Math.cos(Math.toRadians(rotation.y * 90));
+	}
+
+	public void moveY(float amount) {
+		position.y += amount;
+	}
+
+	public void moveX(float amount) {
+		position.z += amount * Math.sin(Math.toRadians(rotation.y));
+		position.x += amount * Math.cos(Math.toRadians(rotation.y));
+	}
 
 	public void rotateX(float amount) {
-		rotation.x += amount;
+		rotation.x += amount * Math.sin(Math.toRadians(position.y));
+		rotation.z += amount * Math.cos(Math.toRadians(position.y));
 	}
 
 	public void rotateY(float amount) {
-		rotation.z += amount;
+		rotation.y += amount;
 	}
 
 	public void keyboardUpdate(boolean isEvent, boolean KBEventState) {
 		if (isEvent) { /* PRESS ONCE STUFF */
-			if (KBEventState) { 
+			if (KBEventState) {
 				// Pressed
-			} else { 
+			} else {
 				// Released
 			}
 		} else { /* HOLDABLE KEYS */
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				// moveZ(0.01f);
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					walkForward(0.1f);
 				} else {
 					walkForward(0.01f);
@@ -186,23 +187,23 @@ public class Camera {
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					walkBackwards(0.1f);
 				} else {
 					walkBackwards(0.01f);
 				}
 			}
-			
+
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					strafeRight(1f);
 				} else {
 					strafeRight(0.1f);
 				}
 			}
-			
+
 			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					strafeLeft(1f);
 				} else {
 					strafeLeft(0.1f);
@@ -210,51 +211,50 @@ public class Camera {
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateX(-4f);
 				} else {
 					rotateX(-1f);
 				}
 			}
-			
+
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateX(4f);
 				} else {
 					rotateX(1f);
 				}
 			}
-			
+
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateY(-4f);
 				} else {
 					rotateY(-1f);
 				}
 			}
-			
+
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 					rotateY(4f);
 				} else {
 					rotateY(1f);
 				}
 			}
-			
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					moveY(-1);
+
+			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+					moveY(1);
 				} else {
 					moveY(0.01f);
 				}
 			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_E)) {
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					moveY(1);
+
+			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+					moveY(-1);
 				} else {
-					moveY(0.01f);
+					moveY(-0.01f);
 				}
 			}
 		}

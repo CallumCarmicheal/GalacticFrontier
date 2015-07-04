@@ -33,10 +33,10 @@ public class Mercury extends IPlanet {
 		 * 				57 (-1 for earth, mercury = 58) days 
 		 * 				add 15 / 10 to get Hours in day form
 		 * 				add 30 / 100 to get Minutes in day form		
-		 * 				Divided by 10 to slow it down to real time
+		 * 				(X) Divided by 10 to slow it down to real time
 		 */
 		
-		return (DayofYear * ((57) + (15 / 10) + (30 / 100))) / 10;
+		return (DayofYear * ((57) + (15 / 10) + (30 / 100)) / 10);
 	}
 	
 	

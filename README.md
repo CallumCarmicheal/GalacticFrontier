@@ -13,8 +13,8 @@ Done          | Basic Planets                                                   
 Done          | Basic Time/Day                                                               | Simulation
 Done          | Basic Rotation                                                               | Rendering
 Done          | Basic Text Render                                                            | Rendering
-WIP           | Planet API                                                                   | Simulation
-DONE          | SubPlanet API                                                                | Simulation
+Done          | Planet API                                                                   | Simulation
+Done          | SubPlanet API                                                                | Simulation
 NO            | Implement Textures                                                           | Rendering
 WIP           | Implement more planets in Sol                                                | Rendering / Simulation
 NO            | Make a projection line around Sol                                            | Rendering / Simulation
