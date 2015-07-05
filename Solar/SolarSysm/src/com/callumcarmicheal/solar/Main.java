@@ -51,7 +51,7 @@ public class Main {
 	List<IPlanet> simObjects;
 	
 	// Render using code or Objects
-	boolean HardRender = false;
+	boolean HardRender = true;
 	
 	void keyboardListener() {
 		
@@ -156,7 +156,11 @@ public class Main {
 		//GL11.glEnable(GL11.GL_BLEND);
 		//GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		
 		Util.fixCamera();
+
+		GL11.glScaled(1, 1, 1);
 		
         GL11.glPushMatrix();
         	//GL11.glLoadIdentity();
@@ -248,7 +252,6 @@ public class Main {
 			spinMode = false;
 		}
 		
-		
 		// RENDER THE HOUR AND DAY 
         if(fontLoaded && renderInfo) {
         	//renderFont.drawString(0, 0, "UNICORNS BECAUSE THERE MANLY!")
@@ -259,7 +262,7 @@ public class Main {
         		GL11.glMatrixMode(GL11.GL_PROJECTION);
         		GL11.glPushMatrix(); {
 	        		GL11.glLoadIdentity();
-	        		GL11.glOrtho(0, 800, 600, 0, 1, -1);
+	        		GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
 	        		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	        		GL11.glDisable(GL11.GL_CULL_FACE);
 	        		GL11.glDisable(GL11.GL_DEPTH_TEST); 
@@ -271,10 +274,10 @@ public class Main {
 	           		renderFont.drawString(10, diff * 1, "LOC     : " + renderCamera.getLocation().toString(), Color.green);
 	           		renderFont.drawString(10, diff * 2, "ROT     : " + renderCamera.getRotation().toString(), Color.green);
 	           		renderFont.drawString(10, diff * 3, "Hour    : " + HourOfDay, Color.cyan);
-	           		renderFont.drawString(10, diff * 4, "Day     : " + DayOfYear, Color.cyan);
-	           		renderFont.drawString(10, diff * 5, "Year    : " + NumberOfYear, Color.cyan);
+	           		renderFont.drawString(10, diff * 4, "Day      : " + DayOfYear, Color.cyan);
+	           		renderFont.drawString(10, diff * 5, "Year     : " + NumberOfYear, Color.cyan);
 	           		renderFont.drawString(10, diff * 6, "H Inc   : " + AnimateIncrement, Color.cyan);
-	           		renderFont.drawString(10, diff * 7, "Spin    : " + spinMode, Color.cyan);
+	           		renderFont.drawString(10, diff * 7, "Spin     : " + spinMode, Color.cyan);
 	           		renderFont.drawString(10, diff * 8, "H Ren   : " + HardRender, Color.cyan);
 	           		
 	           		// Just leave the matrix mode, it knows where you live (it will blow up the software)
@@ -290,6 +293,8 @@ public class Main {
         	
         	GL11.glTranslatef(0, 0, -20);
         }  // */
+        
+        GL11.glScaled (0.5f ,0.5f ,0.5f); 
         
 		// LWJGL ALREADY HANDLES OPENGL FLUSH's AND BUFFER SWAPS (flushes ?) ill leave it in to be safe
 		GL11.glFlush();
@@ -320,7 +325,7 @@ public class Main {
 		float 
 			FOV = 60.0f, 
 			zNear = 0.001f, //TODO : fix clipping range
-			zFar = 1000.0f;
+			zFar = 7500.0f;
 		float aspectRatio;
 		
 		// ??????
@@ -398,6 +403,8 @@ public class Main {
 					simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Venus() 	 );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() 	 );
+					simObjects.add( new com.callumcarmicheal.solar.objects.Mars()    );
+					simObjects.add( new com.callumcarmicheal.solar.objects.Jupiter() );
 				//}
 				
 				Display.setTitle("LOADING RESOURCES (Setting OPENGL settings)");

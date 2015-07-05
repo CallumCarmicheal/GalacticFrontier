@@ -23,6 +23,6 @@ public class Venus extends IPlanet {
 	
 	@Override 
 	public float getDay(float DayOfYear) {
-		return (float) (DayOfYear * 243 / 10);	
+		return (float) (DayOfYear * 243 / 10) * -1;	
 	}
 }

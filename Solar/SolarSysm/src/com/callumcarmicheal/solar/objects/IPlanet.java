@@ -3,25 +3,18 @@ package com.callumcarmicheal.solar.objects;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.text.AsyncBoxView.ChildLocator;
-
 import org.lwjgl.opengl.GL11;
-import org.objectweb.asm.tree.IntInsnNode;
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.PaletteListModel;
 
 import com.callumcarmicheal.OpenGL.GLUT;
-import com.callumcarmicheal.solar.Main;
 import com.callumcarmicheal.solar.exceptions.ExCause;
 import com.callumcarmicheal.solar.exceptions.PlanetException;
 import com.callumcarmicheal.solar.maths.Vector3f;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public abstract class IPlanet {
 
 	// DO NOT TOUCH (RENDER AND SIMULATION VARS)
 	protected int SizeMultiplier = 4;
-	protected float DistFromSun    = 40f;
+	protected float DistFromSun    = 1100f;
 	
 	// REQUIRED
 	protected String planetName;
@@ -86,7 +79,12 @@ public abstract class IPlanet {
 	 * @return
 	 */
 	public float getDay(float DayOfYear) {
-		return (360.0f * DayOfYear / 365.0f);
+		
+		if(BasePlanet == null) {
+			return (360.0f * DayOfYear / 365.0f);
+		} else {
+			return BasePlanet.getDay(DayOfYear);
+		}
 	}
 
 	/**
@@ -185,8 +183,8 @@ public abstract class IPlanet {
 
 		if (orbitIndex == 0) {
 			GL11.glLoadIdentity();
-			GL11.glTranslatef(0.0f, 0.0f, -8.0f);
-			GL11.glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
+			GL11.glTranslatef(3.0f, 0.0f, -8.0f);
+ 			GL11.glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
 
 			if (Color != null) {
 				GL11.glColor3f(Color.r, Color.g, Color.b);
@@ -250,7 +248,7 @@ public abstract class IPlanet {
 							+ ", 0.0, 1.0, 0.0) \n" + "		Translate   :  ("
 							//+ (2 * orbitIndex - 1 + offset) + ", 0.0, 0.0) \n"
 							+ "	Color           :  " + Color.toString() + "\n"
-							+ "	Orbit Index     :  " + this.orbitIndex + "\n"
+							//+ "	Orbit Index     :  " + this.orbitIndex + "\n"
 							//+ "	Offset          :  " + this.offset + "\n"
 							+ "	Child Offset    :  " + this.subPlanets_offset
 							+ "\n" + "	ChildMultiplier :  "
@@ -260,16 +258,20 @@ public abstract class IPlanet {
 				}
 			}
 		} else {
-			GL11.glRotatef(BasePlanet.getDay(DayOfYear), 0.0f, 1.0f, 0.0f);
-			GL11.glTranslatef(BasePlanet.subPlanets_offset * SizeMultiplier, 0.0f, 0.0f);
+			//GL11.glLoadIdentity();
+			//GL11.glTranslatef(0.0f, 0.0f, -8.0f);
+			//GL11.glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
+			//GL11.glRotatef(BasePlanet.getDay(DayOfYear), 0.0f, 1.0f, 0.0f);
+			GL11.glRotatef((DayOfYear), 0.0f, 1.0f, 0.0f);
+			//GL11.glTranslatef((BasePlanet.DistFromSun * BasePlanet.distanceFromSun), 0.0f, 0.0f);
+			GL11.glTranslatef(BasePlanet.subPlanets_offset * SizeMultiplier + 0.25f, 0.0f, 0.0f);
 
 			if (Color != null) {
 				GL11.glColor3f(Color.r, Color.g, Color.b);
 			}
 
 			GLUT.WireSphere3F(
-					((BasePlanet.size / 10) / BasePlanet.subPlanets_Multiplier)
-							/ BasePlanet.subPlanets.size(), 5, 5);
+					((1 * (this.BasePlanet.size - this.size) / SizeMultiplier)), 5, 5);
 
 			if (BasePlanet.printDebug) {
 				String childOuput = " (C) Child Planets :- \n" + "			None";
@@ -286,24 +288,43 @@ public abstract class IPlanet {
 				System.out.println(debugOutput);
 			}
 			
-			/*/ RENDER PREDICTION LINE (well it kinda makes a black hole
-			
-			for (float calcDay = 0.0f; calcDay < 24; calcDay += (12.0f / 1000.0f)) {
+			/*/ Render the prediction line
+			GL11.glPushMatrix(); {
+				for (float calcDay = 0.0f; calcDay < 365; calcDay += (24.0f / 100.0f)) {
 
-				//I just realised this would not work for a sub planet
-				//	that is a sub planet of a sub planet so on so on...
-				
-				// set to base planet location
-				GL11.glRotatef(calcDay, 0.0f, 1.0f, 0.0f);
-				GL11.glTranslatef(0.05f, 0.0f, 0.0f);
-				
-				GL11.glPointSize(1f);
-				GL11.glBegin(GL11.GL_POINTS); { 
-					GL11.glVertex3f(0, 0, 0);
-				} GL11.glEnd();
-			} // */ 
+					GL11.glLoadIdentity();
+					GL11.glColor3f(1, 1, 1);
+					GL11.glTranslatef(0.0f, 0.0f, -8.0f);
+					GL11.glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
+					GL11.glRotatef(BasePlanet.getDay(DayOfYear), 0.0f, 1.0f, 0.0f);
+					GL11.glTranslatef((DistFromSun * distanceFromSun), 0.0f, 0.0f);
+					GL11.glTranslatef(BasePlanet.subPlanets_offset * SizeMultiplier + 0.25f, 0.0f, 0.0f);
+					
+					GL11.glPointSize(0.1f);
+					GL11.glBegin(GL11.GL_POINTS); { 
+						GL11.glVertex3f(0, 0, 0);
+					} GL11.glEnd();
+				}
+			} GL11.glPopMatrix(); //*/
 		}
 
 	}
+	
+	/*
+	 // BLACKHOLE SWIRLY THING!
+		for (float calcDay = 0.0f; calcDay < 24; calcDay += (12.0f / 20.0f)) {
+
+			//I just realised this would not work for a sub planet
+			//	that is a sub planet of a sub planet so on so on...
+			// set to base planet location
+			GL11.glRotatef(calcDay, 0.0f, 1.0f, 0.0f);
+			GL11.glTranslatef(0.05f, 0.0f, 0.0f);
+				
+			GL11.glPointSize(1f);
+			GL11.glBegin(GL11.GL_POINTS); { 
+				GL11.glVertex3f(0, 0, 0);
+			} GL11.glEnd();
+		} // 
+	 */
 
 }

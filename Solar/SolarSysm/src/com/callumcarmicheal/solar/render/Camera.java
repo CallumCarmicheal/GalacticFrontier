@@ -162,6 +162,9 @@ public class Camera {
 	}
 	
 	public void keyboardUpdate(boolean isEvent, boolean KBEventState) {
+		float speedMultiplier = 5f;
+		float speedDeplier    = 2f;
+		
 		if (isEvent) { /* PRESS ONCE STUFF */
 			if (KBEventState) {
 				// Pressed
@@ -173,41 +176,41 @@ public class Camera {
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				// moveZ(0.01f);
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					walkForward(1f);
+					walkForward(1f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					walkForward(0.01f);
+					walkForward(0.01f * speedDeplier);
 				} else {
-					walkForward(0.1f);
+					walkForward(0.1f * speedMultiplier);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					walkBackwards(1f);
+					walkBackwards(1f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					walkBackwards(0.01f);
+					walkBackwards(0.01f * speedDeplier);
 				} else {
-					walkBackwards(0.1f);
+					walkBackwards(0.1f * speedMultiplier);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					moveX(-1f);
+					moveX(-1f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					moveX(-0.01f);
+					moveX(-0.01f * speedDeplier);
 				} else {
-					moveX(-0.1f);
+					moveX(-0.1f * speedMultiplier);
 				}
 			}
 			
 			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					moveX(1f);
+					moveX(1f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					moveX(0.01f);
+					moveX(0.01f * speedDeplier);
 				} else {
-					moveX(0.1f);
+					moveX(0.1f * speedMultiplier);
 				}
 			}
 
@@ -221,81 +224,81 @@ public class Camera {
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_O)) { 
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateZ(4f);
+					rotateZ(4f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					rotateZ(0.04f);
+					rotateZ(0.04f * speedMultiplier);
 				} else {
-					rotateZ(0.4f);
+					rotateZ(0.4f * speedMultiplier);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_P)) { 
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateZ(-4f);
+					rotateZ(-4f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					rotateZ(-0.04f);
+					rotateZ(-0.04f * speedMultiplier);
 				} else {
-					rotateZ(-0.4f);
+					rotateZ(-0.4f * speedMultiplier);
 				}
 			}
 			
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateX(-1f);
+					rotateX(-1f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					rotateX(-0.01f);
+					rotateX(-0.01f * speedDeplier);
 				} else {
-					rotateX(-0.1f);
+					rotateX(-0.1f * speedMultiplier);
 				}
 			}
 			
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateX(1f);
+					rotateX(1f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					rotateX(0.01f);
+					rotateX(0.01f * speedDeplier);
 				} else {
-					rotateX(0.1f);
+					rotateX(0.1f * speedMultiplier);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateY(-1f);
+					rotateY(-1f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					rotateY(-0.01f);
+					rotateY(-0.01f * speedDeplier );
 				} else {
-					rotateY(-0.1f);
+					rotateY(-0.1f * speedMultiplier);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					rotateY(1f);
+					rotateY(1f * speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					rotateY(0.01f);
+					rotateY(0.01f * speedDeplier);
 				} else {
-					rotateY(0.1f);
+					rotateY(0.1f * speedMultiplier);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					moveY(1);
+					moveY(1* speedMultiplier );
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					moveY(0.01f);
+					moveY(0.01f* speedMultiplier);
 				} else {
-					moveY(0.1f);
+					moveY(0.1f* speedMultiplier);
 				}
 			}
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-					moveY(-1);
+					moveY(-1* speedMultiplier);
 				} else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-					moveY(-0.01f);
+					moveY(-0.01f* speedMultiplier);
 				} else {
-					moveY(-0.1f);
+					moveY(-0.1f* speedMultiplier);
 				}
 			} 
 		}
@@ -303,31 +306,7 @@ public class Camera {
 
 	// I have never used mouse input before, only Keyboard
 	public void mouseUpdate() {
-		/*
-		float mouseSpeed = 0.01f;
 		
-		float x = (mouseSpeed * System.nanoTime() * (Display.getWidth()/2 - Mouse.getX())); 							
-		float y = (mouseSpeed * System.nanoTime() * (Display.getHeight()i()/2 - Mouse.getY())); 	
-		
-		
-		x = (y * 0.22f + 25f); // fix calculations with display
-		y = (y * 0.22f + 25f); // fix calculations with display
-		
-		x = x - 0.3600006f; // trim it to 0 (left over from calculations)
-		y = y - 0.3600006f; // trim it to 0 (left over from calculations)
-		
-		
-		//System.out.println( "\n\n\n" +
-		//		"MOUSE     (" + (x) + " | " + (y) + ") \n + " + 
-		//		"DISP      (" + Display.getWidth()/2 + " | " + Display.getHeight()/2 + ")"
-		//);
-		
-		rotateY(x);
-		lookLeft(y);
-		*/
-		
-		float x = Mouse.getDX();
-		float y = Mouse.getDY();
 	}
 
 }

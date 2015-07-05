@@ -21,20 +21,20 @@ public class Planet extends IPlanet{
 	/**
 	 * This can be used to create a basic planet or simple moon
 	 */
-	public Planet(String PlanetName, Vector3f PlanetColor, IPlanet BasePlanet, float Subplanets_Multiplier) {
+	public Planet(String PlanetName, Vector3f PlanetColor, IPlanet BasePlanet) {
 		this.planetName = PlanetName;
 		this.Color = PlanetColor;
 		this.BasePlanet = BasePlanet;
-		this.subPlanets_Multiplier = Subplanets_Multiplier;
 	}
 	
 	/**
 	 * This can be used to create a basic planet or simple moon
 	 */
-	public Planet(String PlanetName, Vector3f PlanetColor, IPlanet BasePlanet) {
+	public Planet(String PlanetName, Vector3f PlanetColor, IPlanet BasePlanet, float Size) {
 		this.planetName = PlanetName;
 		this.Color = PlanetColor;
 		this.BasePlanet = BasePlanet;
+		this.size = Size;
 	}
 	
 	
