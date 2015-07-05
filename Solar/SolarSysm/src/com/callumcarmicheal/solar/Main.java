@@ -156,8 +156,15 @@ public class Main {
 	
 	void Animate() {
 		
-		if(renderCamera.getLocation().y > 5500 || renderCamera.getLocation().y < -5500) {
-			if(zNear == 0.001f) {
+		if(renderCamera.getLocation().y > 3000 || renderCamera.getLocation().y < -3000) {
+			if(renderCamera.getLocation().y > 6000 || renderCamera.getLocation().y < -6000)  {
+				if(zFar == 100000) {
+					zNear =  1000f;
+					zFar  = 1000000f;
+					
+					onWindowResize(false);
+				}
+			} else if (zNear == 0.001f) {
 				zNear =  100f;
 				zFar  = 100000f;
 				
