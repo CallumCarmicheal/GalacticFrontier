@@ -19,7 +19,7 @@ A work-in-progress SolarSystem simulation based in JAVA.
 14. Arguments -> VM Args, 
     type -Djava.library.path="{REPLACE ME WITH GITHUB REPO LOC}\lib\lwjgl-2.9.3\native\windows"
 	change windows if you are not on windows OS
-15. Debug	
+15. Try to debug Debug, if it does not work create a issue report
 
 Side Note: you may want to rename the debug config (Just a tip)
 
@@ -54,6 +54,7 @@ NO            | Minecraft 3d World | Rendering
 NO            | Minecraft Galaxy   | Rendering
 NO            | Galaxy Exploration | Rendering/Sim
 DONE          | 3d Navigation      | Rendering
+NO            | Ram optimization   | EVERYTHING!
 
 
 # Controls

@@ -310,7 +310,7 @@ public class Main {
 	           		renderFont.drawString(10, diff * 7,  "H Inc   : " + AnimateIncrement, Color.cyan);
 	           		renderFont.drawString(10, diff * 8,  "Spin     : " + spinMode, Color.cyan);
 	           		renderFont.drawString(10, diff * 9,  "H Ren   : " + HardRender, Color.cyan);
-	           		renderFont.drawString(10, diff * 10, "H Ren   : " + HardRender, Color.cyan);
+	           		renderFont.drawString(10, diff * 10, "Controls on Github (PRESS G)", Color.magenta);
 	           		
 	           		// Just leave the matrix mode, it knows where you live (it will blow up the software)
 	           		// FINE ILL LEAVE YOU ALONE, JESUS!
