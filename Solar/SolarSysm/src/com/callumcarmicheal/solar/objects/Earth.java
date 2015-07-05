@@ -39,4 +39,11 @@ public class Earth extends IPlanet {
 		distanceFromSun = 1;
 	}
 	
+	@Override
+	public void update(float HourOfDay, float DayOfYear, int NumberOfYear) {
+		this.size = 1;
+		
+		super.update(HourOfDay, DayOfYear, NumberOfYear);
+	}
+	
 }

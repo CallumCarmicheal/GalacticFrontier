@@ -162,7 +162,7 @@ public class Camera {
 	}
 	
 	public void keyboardUpdate(boolean isEvent, boolean KBEventState) {
-		float speedMultiplier = 5f;
+		float speedMultiplier = 10f;
 		float speedDeplier    = 2f;
 		
 		if (isEvent) { /* PRESS ONCE STUFF */

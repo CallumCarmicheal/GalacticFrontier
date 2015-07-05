@@ -2,6 +2,27 @@
 A work-in-progress SolarSystem simulation based in JAVA.
 + MineCraft main menu OGL hook.
 
+#Compiling from source
+1. Download Git REPO
+2. Open Eclipse
+3. Select *YOUR* default workspace
+4. Right click on Project -> Import -> Import 
+5. click Existing Projects into Workspace 
+6. Enter the git Repo location 
+7. Select SolarSysm (great name huh?) 
+8. Wait for it to start, then Right Click the project  -> Properties 
+9. Build Path -> remove everything
+10. Add External Jar GIT\lib\LWJGL\jar ADD EVERYTHING 
+11. then also add Git\lib\slick-util\lib ADD EVERYTHING 
+12. Goto Debug Configuration/Launch Config -> Create New Java App
+13. Main Class, Search -> Select Init | Default Package
+14. Arguments -> VM Args, 
+    type -Djava.library.path="{REPLACE ME WITH GITHUB REPO LOC}\lib\lwjgl-2.9.3\native\windows"
+	change windows if you are not on windows OS
+15. Debug	
+
+Side Note: you may want to rename the debug config (Just a tip)
+
 
 #RoadMap
 

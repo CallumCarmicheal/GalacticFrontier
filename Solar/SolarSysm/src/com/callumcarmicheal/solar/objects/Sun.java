@@ -20,7 +20,7 @@ public class Sun extends IPlanet {
 		subPlanets_Multiplier = 4;
 		subPlanets_offset = 0.7f;
 		
-		
+		/*
 		try {
 			this.addChildPlanet(
 				new Planet(
@@ -32,7 +32,7 @@ public class Sun extends IPlanet {
 			);
 		} catch (PlanetException e) {
 			e.printERR();
-		}
+		} */
 	}
 
 }

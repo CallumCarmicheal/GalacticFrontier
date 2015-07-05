@@ -8,7 +8,11 @@
 	<classpathentry kind="lib" path="F:/GalacticFrontier/lib/lwjgl-2.9.3/jar/laf-plugin-7.2.1.jar"/>
 	<classpathentry kind="lib" path="F:/GalacticFrontier/lib/lwjgl-2.9.3/jar/laf-widget-7.2.1.jar"/>
 	<classpathentry kind="lib" path="F:/GalacticFrontier/lib/lwjgl-2.9.3/jar/log4j-api-2.0-beta9.jar"/>
-	<classpathentry kind="lib" path="F:/GalacticFrontier/lib/lwjgl-2.9.3/jar/lwjgl.jar"/>
+	<classpathentry kind="lib" path="F:/GalacticFrontier/lib/lwjgl-2.9.3/jar/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="F:/GalacticFrontier/lib/lwjgl-2.9.3/native/windows"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="F:/GalacticFrontier/lib/lwjgl-2.9.3/jar/lwjgl_test.jar"/>
 	<classpathentry kind="lib" path="F:/GalacticFrontier/lib/lwjgl-2.9.3/jar/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="F:/GalacticFrontier/lib/lwjgl-2.9.3/jar/lwjgl_util_applet.jar"/>

@@ -41,6 +41,11 @@ public class Main {
 	boolean renderInfo = true;
 	Camera renderCamera;
 	boolean grabMouse = false;
+	float 
+		FOV = 60.0f, 
+		zNear = 0.001f, //TODO : fix clipping range (Favour close over far)
+		zFar =  8500.0f;
+	
 	
 	// Animation -> Simulation Variables
 	float HourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY); // Set to 0.0f if problem occurs
@@ -150,6 +155,24 @@ public class Main {
 	}
 	
 	void Animate() {
+		
+		if(renderCamera.getLocation().y > 5500 || renderCamera.getLocation().y < -5500) {
+			if(zNear == 0.001f) {
+				zNear =  100f;
+				zFar  = 100000f;
+				
+				onWindowResize(false);
+			}
+		} else {
+			if(zNear != 0.001f) {
+				zNear =  0.001f;
+				zFar =  8500.0f;
+				
+				onWindowResize(false);
+			}
+		}
+		
+		
 		// Clear the rendering output/buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		 
@@ -204,7 +227,7 @@ public class Main {
 		
 		// Hard Render = Render it using raw code no Planet Objects
 		// 
-		if(HardRender) 
+		//if(HardRender) 
 		{
 			// Draw the sun -- as yellow, sphere
 			GL11.glColor3f( 1.0f, 1.0f, 0.0f );
@@ -242,7 +265,7 @@ public class Main {
 				GL11.glColor3f( 1f, 1f, 1f );
 				GLUT.WireSphere3F( 0.1f, 5, 5);
 			}
-		} else {
+		/*/} else { */ if(!HardRender) 
 			for(IPlanet planet : simObjects) {
 				planet.update(HourOfDay, DayOfYear, NumberOfYear);
 			}
@@ -270,15 +293,17 @@ public class Main {
 	        		GL11.glLoadIdentity();
 	
 	        		int diff = 15;
-	           		renderFont.drawString(10, diff * 0, "Creators: CallumC, Bastien Fremondiere", Color.red);
-	           		renderFont.drawString(10, diff * 1, "LOC     : " + renderCamera.getLocation().toString(), Color.green);
-	           		renderFont.drawString(10, diff * 2, "ROT     : " + renderCamera.getRotation().toString(), Color.green);
-	           		renderFont.drawString(10, diff * 3, "Hour    : " + HourOfDay, Color.cyan);
-	           		renderFont.drawString(10, diff * 4, "Day      : " + DayOfYear, Color.cyan);
-	           		renderFont.drawString(10, diff * 5, "Year     : " + NumberOfYear, Color.cyan);
-	           		renderFont.drawString(10, diff * 6, "H Inc   : " + AnimateIncrement, Color.cyan);
-	           		renderFont.drawString(10, diff * 7, "Spin     : " + spinMode, Color.cyan);
-	           		renderFont.drawString(10, diff * 8, "H Ren   : " + HardRender, Color.cyan);
+	           		renderFont.drawString(10, diff * 0,  "Creators: CallumC, Bastien Fremondiere", Color.red);
+	           		renderFont.drawString(10, diff * 1,  "Version : Beta 0.3", Color.yellow);
+	           		renderFont.drawString(10, diff * 2,  "LOC     : " + renderCamera.getLocation().toString(), Color.green);
+	           		renderFont.drawString(10, diff * 3,  "ROT     : " + renderCamera.getRotation().toString(), Color.green);
+	           		renderFont.drawString(10, diff * 4,  "Hour    : " + HourOfDay, Color.cyan);
+	           		renderFont.drawString(10, diff * 5,  "Day      : " + DayOfYear, Color.cyan);
+	           		renderFont.drawString(10, diff * 6,  "Year     : " + NumberOfYear, Color.cyan);
+	           		renderFont.drawString(10, diff * 7,  "H Inc   : " + AnimateIncrement, Color.cyan);
+	           		renderFont.drawString(10, diff * 8,  "Spin     : " + spinMode, Color.cyan);
+	           		renderFont.drawString(10, diff * 9,  "H Ren   : " + HardRender, Color.cyan);
+	           		renderFont.drawString(10, diff * 10, "H Ren   : " + HardRender, Color.cyan);
 	           		
 	           		// Just leave the matrix mode, it knows where you live (it will blow up the software)
 	           		// FINE ILL LEAVE YOU ALONE, JESUS!
@@ -322,10 +347,7 @@ public class Main {
 		
 		int w = Display.getWidth();
 		int h = Display.getHeight();
-		float 
-			FOV = 60.0f, 
-			zNear = 0.001f, //TODO : fix clipping range
-			zFar = 7500.0f;
+		
 		float aspectRatio;
 		
 		// ??????
