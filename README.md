@@ -2,6 +2,10 @@
 A work-in-progress SolarSystem simulation based in JAVA.
 + MineCraft main menu OGL hook.
 
+#Test Build
+To get a test build goto the "Build" folder and select a version.
+(Should work for Windows, Linux, Mac)
+
 #Compiling from source
 1. Download Git REPO
 2. Open Eclipse

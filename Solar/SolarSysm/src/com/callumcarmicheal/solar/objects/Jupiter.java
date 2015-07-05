@@ -18,4 +18,9 @@ public class Jupiter extends IPlanet {
 		
 		distanceFromSun = 5.20f;
 	}
+	
+	@Override
+	public float getDay(float day) {
+		return day;
+	}
 }
