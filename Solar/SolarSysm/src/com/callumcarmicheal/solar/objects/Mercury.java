@@ -11,11 +11,10 @@ public class Mercury extends IPlanet {
 		
 		planetName = "Mercury";
 		orbitIndex = 1;
-		size = 0.055f;
+		Mass = 0.055f;
 		Color = new Vector3f(201, 131, 18);
 		//subplanets.add(new Planet("", 3, 0, 0, new Vector3f(1.0f, 1.0f, 1.0f), this, null, 4 ));
-		subPlanets_Multiplier = 4;
-		subPlanets_offset = 0.7f;
+		subPlanetsDistance = 0.7f;
 		
 		
 		distanceFromSun = 0.39f;

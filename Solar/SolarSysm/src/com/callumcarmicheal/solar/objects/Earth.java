@@ -16,32 +16,21 @@ public class Earth extends IPlanet {
 		
 		planetName = "Earth";
 		orbitIndex = 3;
-		size = 1;
+		Mass = 1;
 		Color = new Vector3f(0f, 0f, 1f);
 		
 		subPlanets.add(
-			new Planet(
-				"Earth (Moon)", 
-				3, 
-				1.222f,  // 1.2223321763038349416210803742011e-26f
-				new Vector3f(1.0f, 1.0f, 1.0f), 
-				this, 
-				null,
-				4 
-			)
+			new Planet("Earth (Moon: 0)", this, new Vector3f(1f, 1f, 1f), 0.12f, null)
 		);
 		
-		subPlanets_Multiplier = 2;
-		subPlanets_offset = 0.07f;
-		
+		subPlanetsDistance = 0.07f;
 		printDebug = false;
-		
 		distanceFromSun = 1;
 	}
 	
 	@Override
 	public void update(float HourOfDay, float DayOfYear, int NumberOfYear) {
-		this.size = 1;
+		this.Mass = 1;
 		
 		super.update(HourOfDay, DayOfYear, NumberOfYear);
 	}

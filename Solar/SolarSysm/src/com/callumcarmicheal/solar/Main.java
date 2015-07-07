@@ -41,6 +41,7 @@ public class Main {
 	boolean renderInfo = true;
 	Camera renderCamera;
 	boolean grabMouse = false;
+	public boolean projectionLines = true;
 	float 
 		FOV = 60.0f, 
 		zNear = 0.001f, //TODO : fix clipping range (Favour close over far)
@@ -108,6 +109,10 @@ public class Main {
 					
 					if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
 						this.disposing = true;
+					}
+					
+					if(Keyboard.getEventKey() == Keyboard.KEY_U) {
+						this.projectionLines = !this.projectionLines;
 					}
 					
 					renderCamera.keyboardUpdate(true, true);
@@ -429,11 +434,11 @@ public class Main {
 					simObjects = new ArrayList<IPlanet>();
 					
 					simObjects.add( new com.callumcarmicheal.solar.objects.Sun() 	 );
-					simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
-					simObjects.add( new com.callumcarmicheal.solar.objects.Venus() 	 );
+					//simObjects.add( new com.callumcarmicheal.solar.objects.Mercury() );
+					//simObjects.add( new com.callumcarmicheal.solar.objects.Venus() 	 );
 					simObjects.add( new com.callumcarmicheal.solar.objects.Earth() 	 );
-					simObjects.add( new com.callumcarmicheal.solar.objects.Mars()    );
-					simObjects.add( new com.callumcarmicheal.solar.objects.Jupiter() );
+					//simObjects.add( new com.callumcarmicheal.solar.objects.Mars()    );
+					//simObjects.add( new com.callumcarmicheal.solar.objects.Jupiter() );
 				//}
 				
 				Display.setTitle("LOADING RESOURCES (Setting OPENGL settings)");

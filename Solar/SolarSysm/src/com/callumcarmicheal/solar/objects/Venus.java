@@ -9,12 +9,11 @@ public class Venus extends IPlanet {
 	public void init() {
 		planetName = "Venus";
 		orbitIndex = 2;
-		size = (0.815f);
+		Mass = (0.815f);
 		
 		Color = new Vector3f(1f, 1f, 0f);
 		subPlanets = null;
-		subPlanets_Multiplier = 4;
-		subPlanets_offset = 0.07f;
+		subPlanetsDistance = 0.07f;
 		
 		distanceFromSun = 0.72f;
 		

@@ -10,12 +10,11 @@ public class Mars extends IPlanet {
 	public void init() {
 		planetName = "Mars";
 		orbitIndex = 4;
-		size = (0.107f);
+		Mass = (0.107f);
 		
 		Color = new Vector3f(1f, 1f, 0f);
 		subPlanets = null;
-		subPlanets_Multiplier = 4;
-		subPlanets_offset = 0.07f;
+		subPlanetsDistance = 0.07f;
 		
 		distanceFromSun = 1.52f;
 		
@@ -45,7 +44,7 @@ public class Mars extends IPlanet {
 			this.BasePlanet = basePlanet;
 			this.MoonIndex = MoonIndex;
 			this.planetName = planetName;
-			this.size = size;
+			this.Mass = size;
 			
 			init();
 		}

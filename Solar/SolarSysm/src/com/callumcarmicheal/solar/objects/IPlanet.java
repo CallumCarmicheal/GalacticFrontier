@@ -6,6 +6,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.callumcarmicheal.OpenGL.GLUT;
+import com.callumcarmicheal.solar.Main;
 import com.callumcarmicheal.solar.exceptions.ExCause;
 import com.callumcarmicheal.solar.exceptions.PlanetException;
 import com.callumcarmicheal.solar.maths.Vector3f;
@@ -19,16 +20,15 @@ public abstract class IPlanet {
 	// REQUIRED
 	protected String planetName;
 	protected int orbitIndex;
-	protected float size;
+	protected float Mass;
 	protected Vector3f Color;
 	protected float distanceFromSun;
 	
-
 	// ** OPTIONAL
 	protected IPlanet BasePlanet = null; // IF NULL THEN SPIN AROUND THE SUN
 	protected List<IPlanet> subPlanets = new ArrayList<IPlanet>();;
-	protected float subPlanets_Multiplier = 4;
-	protected float subPlanets_offset = 0.07f;
+	protected float subPlanetsDistance = 0.07f; 
+	protected float subPlanetsMultiplier = 4;
 	protected boolean printDebug = false;
 
 	public IPlanet() {
@@ -37,39 +37,25 @@ public abstract class IPlanet {
 
 	public IPlanet(String PlanetName, int OrbitIndex, float Size,
 			Vector3f planetColor) {
-		this(PlanetName, OrbitIndex, Size, planetColor, null, null, 0.7f);
+		this(PlanetName, OrbitIndex, Size, planetColor, null, 0.7f);
 	}
 
 	public IPlanet(String PlanetName, int OrbitIndex, float Size,
 			Vector3f planetColor, List<IPlanet> Subplanets,
 			float Subplanets_offset) {
-		this(PlanetName, OrbitIndex, Size, planetColor, null, Subplanets,
-				Subplanets_offset);
+		this(PlanetName, OrbitIndex, Size, planetColor, null, Subplanets);
 	}
 
 	public IPlanet(String PlanetName, int OrbitIndex, float Size,
-			Vector3f planetColor, IPlanet BasePlanet, List<IPlanet> Subplanets,
-			float Subplanets_Multiplier) {
+			Vector3f planetColor, IPlanet BasePlanet, List<IPlanet> Subplanets) {
 		this.planetName = PlanetName;
 		this.orbitIndex = OrbitIndex;
-		this.size = Size;
+		this.Mass = Size;
 		this.Color = planetColor;
 		this.BasePlanet = BasePlanet;
 		this.subPlanets = Subplanets;
-		this.subPlanets_Multiplier = Subplanets_Multiplier;
 
 		init();
-
-		//calculateOffset();
-	}
-
-	@Deprecated
-	private void calculateOffset() {
-		if (BasePlanet != null) {
-			//this.offset = 100.0f;
-		} else {
-			//this.offset = subPlanets_offset;
-		}
 	}
 
 	/**
@@ -93,7 +79,7 @@ public abstract class IPlanet {
 	 * 
 	 * @param HourOfDay
 	 *            The current hour on earth
-	 * @return Planets Hour
+	 * @return The Planet's Hour
 	 */
 	public float getHour(float HourOfDay) {
 		return (360.0f * HourOfDay / 24.0f);
@@ -174,8 +160,7 @@ public abstract class IPlanet {
 	}
 
 	/**
-	 * DO NOT OVERWRITE UNLESS NEEDED TO, AFTER CALL super.render(HourOfDay,
-	 * DayOfYear);
+	 * DO NOT OVERWRITE UNLESS NEEDED TO, AFTER CALL super.render();
 	 */
 	private void render(float HourOfDay, float DayOfYear, int NumberOfYear) {
 		float angle1;
@@ -189,7 +174,7 @@ public abstract class IPlanet {
 			if (Color != null) {
 				GL11.glColor3f(Color.r, Color.g, Color.b);
 			}
-			GLUT.WireSphere3D(1 * this.size / SizeMultiplier + 5, 15, 15);
+			GLUT.WireSphere3D(1 * this.Mass / SizeMultiplier + 5, 15, 15);
 		} else if (BasePlanet == null) {
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(0.0f, 0.0f, -8.0f);
@@ -208,54 +193,34 @@ public abstract class IPlanet {
 					if (Color != null) {
 						GL11.glColor3f(Color.r, Color.g, Color.b);
 					}
-					GLUT.WireSphere3F((1 * this.size / SizeMultiplier), 10, 10);
+					GLUT.WireSphere3F((1 * this.Mass / SizeMultiplier), 10, 10);
 				}
 				GL11.glPopMatrix(); // Restore Matrix State
 
 				
 				// Render the prediction line
-				GL11.glPushMatrix(); {
-					for (float calcDay = 0.0f; calcDay < 365; calcDay += (24.0f / 100.0f)) {
-
-						GL11.glLoadIdentity();
-						GL11.glColor3f(1, 1, 1);
-						GL11.glTranslatef(0.0f, 0.0f, -8.0f);
-						GL11.glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
-						GL11.glRotatef(calcDay, 0.0f, 1.0f, 0.0f);
-						GL11.glTranslatef((DistFromSun * distanceFromSun), 0.0f,
-								0.0f);
-						
-						GL11.glPointSize(0.1f);
-						GL11.glBegin(GL11.GL_POINTS); { 
-							GL11.glVertex3f(0, 0, 0);
-						} GL11.glEnd();
-					}
-				} GL11.glPopMatrix();
-				
-				
-
-				if (printDebug) {
-					String childOuput = "	Child Planets   :- \n" + "		None";
-
-					if (!subPlanets.isEmpty()) {
-						childOuput = "	Child Planets   :- ";
-					}
-
-					// Sigh (WHY WONT YOU LINE UP)
-					String debugOutput = (this.planetName + " :- \n"
-							+ "	Location        :- " + "\n"
-							+ "		Rotation    :  (" + (getDay(DayOfYear))
-							+ ", 0.0, 1.0, 0.0) \n" + "		Translate   :  ("
-							//+ (2 * orbitIndex - 1 + offset) + ", 0.0, 0.0) \n"
-							+ "	Color           :  " + Color.toString() + "\n"
-							//+ "	Orbit Index     :  " + this.orbitIndex + "\n"
-							//+ "	Offset          :  " + this.offset + "\n"
-							+ "	Child Offset    :  " + this.subPlanets_offset
-							+ "\n" + "	ChildMultiplier :  "
-							+ this.subPlanets_Multiplier + "\n" + childOuput);
-
-					System.out.println(debugOutput);
+				if(Main.instance.projectionLines) {
+					GL11.glPushMatrix(); {
+						for (float calcDay = 0.0f; calcDay < 365; calcDay += (24.0f / 100.0f)) {
+	
+							GL11.glLoadIdentity();
+							GL11.glColor3f(1, 1, 1);
+							GL11.glTranslatef(0.0f, 0.0f, -8.0f);
+							GL11.glRotatef(15.0f, 1.0f, 0.0f, 0.0f);
+							GL11.glRotatef(calcDay, 0.0f, 1.0f, 0.0f);
+							GL11.glTranslatef((DistFromSun * distanceFromSun), 0.0f,
+									0.0f);
+							
+							GL11.glPointSize(0.1f);
+							GL11.glBegin(GL11.GL_POINTS); { 
+								GL11.glVertex3f(0, 0, 0);
+							} GL11.glEnd();
+						}
+					} GL11.glPopMatrix();
 				}
+				
+
+				if (printDebug) { /* TODO: Create a debug output for planets */ }
 			}
 		} else {
 			//GL11.glLoadIdentity();
@@ -264,33 +229,19 @@ public abstract class IPlanet {
 			//GL11.glRotatef(BasePlanet.getDay(DayOfYear), 0.0f, 1.0f, 0.0f);
 			GL11.glRotatef((DayOfYear), 0.0f, 1.0f, 0.0f);
 			//GL11.glTranslatef((BasePlanet.DistFromSun * BasePlanet.distanceFromSun), 0.0f, 0.0f);
-			GL11.glTranslatef(BasePlanet.subPlanets_offset * SizeMultiplier + 0.25f, 0.0f, 0.0f);
+			GL11.glTranslatef(BasePlanet.subPlanetsDistance * SizeMultiplier + 0.25f, 0.0f, 0.0f);
 
 			if (Color != null) {
 				GL11.glColor3f(Color.r, Color.g, Color.b);
 			}
 
-			GLUT.WireSphere3F(
-					((1 * (this.BasePlanet.size - this.size) / SizeMultiplier)), 5, 5);
+			GLUT.WireSphere3F((1 * (this.BasePlanet.Mass - this.Mass) / SizeMultiplier), 5, 5);
 
-			if (BasePlanet.printDebug) {
-				String childOuput = " (C) Child Planets :- \n" + "			None";
-
-				if (!subPlanets.isEmpty()) {
-					childOuput = " (C) Child Planets :- ";
-				}
-
-				String debugOutput = ("		" + this.planetName + " :- \n"
-						+ "	(C) Location :- " + "\n"
-						+ "	(C) Translate :  (0.7, 0.0, 0.0) \n"
-						+ "	(C) Color :  " + Color.toString() + "\n" + childOuput);
-
-				System.out.println(debugOutput);
-			}
+			if (BasePlanet.printDebug) { /* TODO: Create a debug output for planets */ }
 			
-			/*/ Render the prediction line
-			GL11.glPushMatrix(); {
-				for (float calcDay = 0.0f; calcDay < 365; calcDay += (24.0f / 100.0f)) {
+			/*/ Render the prediction line (This was accident but a cool one) now does not work o.0
+			GL11.glPushMatrix(); { 
+				for (float calcDay = 0.0f; calcDay < 365; calcDay += (24.0f / 10.0f)) {
 
 					GL11.glLoadIdentity();
 					GL11.glColor3f(1, 1, 1);
@@ -300,7 +251,7 @@ public abstract class IPlanet {
 					GL11.glTranslatef((DistFromSun * distanceFromSun), 0.0f, 0.0f);
 					GL11.glTranslatef(BasePlanet.subPlanets_offset * SizeMultiplier + 0.25f, 0.0f, 0.0f);
 					
-					GL11.glPointSize(0.1f);
+					GL11.glPointSize(1f);
 					GL11.glBegin(GL11.GL_POINTS); { 
 						GL11.glVertex3f(0, 0, 0);
 					} GL11.glEnd();

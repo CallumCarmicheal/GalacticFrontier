@@ -13,12 +13,10 @@ public class Sun extends IPlanet {
 		
 		planetName = "The Sun";
 		orbitIndex = 0;
-		size = 1000; // 1 = Earth's mass, 1 * Mass
+		Mass = 1000; // 1 = Earth's mass, 1 * Mass
 		Color = new Vector3f(1f, 1f, 0f);
 		subPlanets = new ArrayList<IPlanet>();
-		subPlanets_Multiplier = 4;
-		subPlanets_Multiplier = 4;
-		subPlanets_offset = 0.7f;
+		subPlanetsDistance = 0.7f;
 		
 		/*
 		try {
