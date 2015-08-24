@@ -1,6 +1,6 @@
-package com.callumcarmicheal.solar.exceptions;
+package com.callumcarmicheal.old.solar.exceptions;
 
-import com.callumcarmicheal.solar.objects.IPlanet;
+import com.callumcarmicheal.old.solar.objects.IPlanet;
 
 public class PlanetException extends Exception {
 

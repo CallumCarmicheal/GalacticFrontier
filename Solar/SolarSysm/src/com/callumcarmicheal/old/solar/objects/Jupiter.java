@@ -1,6 +1,6 @@
-package com.callumcarmicheal.solar.objects;
+package com.callumcarmicheal.old.solar.objects;
 
-import com.callumcarmicheal.solar.maths.Vector3f;
+import com.callumcarmicheal.maths.Vector3f;
 
 public class Jupiter extends IPlanet {
 

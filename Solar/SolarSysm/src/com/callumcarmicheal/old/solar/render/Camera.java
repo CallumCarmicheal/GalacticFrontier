@@ -1,6 +1,10 @@
-package com.callumcarmicheal.solar.render;
+package com.callumcarmicheal.old.solar.render;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -40,8 +44,8 @@ public class Camera {
 	public Camera(Vector4f renderSettings) {
 		this.renderSettings = renderSettings;
 
-		position = new Vector3f(1f, 1f, 1f);
-		rotation = new Vector3f(1f, 1f, 1f);
+		position = new Vector3f(0.00001f, 0.00001f, 0.00001f);
+		rotation = new Vector3f(0.00001f, 0.00001f, 0.00001f);
 
 		initProjection();
 	}
@@ -138,8 +142,8 @@ public class Camera {
 	}
 	
 	public void keyboardUpdate(boolean isEvent, boolean KBEventState) {
-		float speedMultiplier = 0.5f;
-		float speedDeplier    = 0.1f;
+		float speedMultiplier = 10f;
+		float speedDeplier    = 2f;
 		
 		if (isEvent) { /* PRESS ONCE STUFF */
 			if (KBEventState) {
@@ -281,5 +285,8 @@ public class Camera {
 	}
 
 	// I have never used mouse input before, only Keyboard
-	public void mouseUpdate() { }
+	public void mouseUpdate() {
+		
+	}
+
 }

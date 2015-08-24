@@ -67,6 +67,7 @@ Key    | Action
 -------|-------
 R      | Toggle Animation (ON/OFF)
 G      | Toggle between original and generated code
+U      | Toggle Projection Lines around the planets rotation
 T      | Sets to single step (turns off Animation and increment hours by 1)
 PGUP   | Increment Hour per Frame Skip on Animation
 PGDOWN | Decrement Hour per Frame Skip on Animation

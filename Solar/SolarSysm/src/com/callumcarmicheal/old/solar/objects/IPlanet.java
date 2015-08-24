@@ -1,4 +1,4 @@
-package com.callumcarmicheal.solar.objects;
+package com.callumcarmicheal.old.solar.objects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.callumcarmicheal.OpenGL.GLUT;
-import com.callumcarmicheal.solar.Main;
-import com.callumcarmicheal.solar.exceptions.ExCause;
-import com.callumcarmicheal.solar.exceptions.PlanetException;
-import com.callumcarmicheal.solar.maths.Vector3f;
+import com.callumcarmicheal.maths.Vector3f;
+import com.callumcarmicheal.old.solar.Main;
+import com.callumcarmicheal.old.solar.exceptions.ExCause;
+import com.callumcarmicheal.old.solar.exceptions.PlanetException;
 
 public abstract class IPlanet {
 

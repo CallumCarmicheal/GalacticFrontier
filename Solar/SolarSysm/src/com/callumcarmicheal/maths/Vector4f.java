@@ -1,4 +1,4 @@
-package com.callumcarmicheal.solar.maths;
+package com.callumcarmicheal.maths;
 
 public class Vector4f {
 

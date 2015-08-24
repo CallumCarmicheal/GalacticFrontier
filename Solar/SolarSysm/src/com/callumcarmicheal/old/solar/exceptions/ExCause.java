@@ -1,4 +1,4 @@
-package com.callumcarmicheal.solar.exceptions;
+package com.callumcarmicheal.old.solar.exceptions;
 
 public enum ExCause {
 	UnHandled,

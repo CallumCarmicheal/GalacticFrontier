@@ -1,9 +1,9 @@
-package com.callumcarmicheal.solar.objects;
+package com.callumcarmicheal.old.solar.objects;
 
 import java.util.ArrayList;
 
-import com.callumcarmicheal.solar.exceptions.PlanetException;
-import com.callumcarmicheal.solar.maths.Vector3f;
+import com.callumcarmicheal.maths.Vector3f;
+import com.callumcarmicheal.old.solar.exceptions.PlanetException;
 
 public class Sun extends IPlanet {
 	

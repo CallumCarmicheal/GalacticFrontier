@@ -1,4 +1,4 @@
-package com.callumcarmicheal.solar.objects;
+package com.callumcarmicheal.old.solar.objects;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.callumcarmicheal.solar.exceptions.PlanetException;
-import com.callumcarmicheal.solar.maths.Vector3f;
+import com.callumcarmicheal.maths.Vector3f;
+import com.callumcarmicheal.old.solar.exceptions.PlanetException;
 
 public class Earth extends IPlanet {
 	
