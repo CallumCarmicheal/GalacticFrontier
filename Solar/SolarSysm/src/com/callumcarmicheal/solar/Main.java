@@ -63,8 +63,8 @@ public class Main {
 		renderCamera;
 	float
 		FOV = 60.0f,
-		zNear = 0.001f, 
-		zFar = 100.001f;
+		zNear = 0.001f,
+		zFar = 1000.001f;
 
 	
 	// LISTENERS -->
@@ -155,30 +155,113 @@ public class Main {
 	
 	void addStar() {
 		String starName = JOptionPane.showInputDialog(null, "Enter star's name. *Optional", "Add star to galaxy", JOptionPane.QUESTION_MESSAGE);
-		
 		float starX = Float.parseFloat(JOptionPane.showInputDialog(null, "Enter X", "Add star to galaxy", JOptionPane.QUESTION_MESSAGE));
 		float starY = Float.parseFloat(JOptionPane.showInputDialog(null, "Enter Y", "Add star to galaxy", JOptionPane.QUESTION_MESSAGE));
-		
-		if(starX == 0) {
-			starX = (float) (Math.random() * 142);
-		} if(starY == 0) {
-			starY = (float) (Math.random() * 142);
-		}		
+		float starZ = Float.parseFloat(JOptionPane.showInputDialog(null, "Enter Z", "Add star to galaxy", JOptionPane.QUESTION_MESSAGE));
 		
 		SimObject starObj;
 		
-		if(starName != null) 
-			starObj = new SimObject(starName, starX, starY, 92, 92, true);
+		if (starName != null) 
+			starObj = new SimObject(starName, starX, starX, starZ, true);
 		else 
-			starObj = new SimObject("", starX, starY, 92, 92, true);
+			starObj = new SimObject("", starX, starX, starZ, true);
 		
-		protectHashMap(Stars, starObj.UID, starObj); // It would help if i added it -.-
-		
-		
-		JOptionPane.showMessageDialog(null, (Object)"Created Star With Params (" + starName + "|" + starX + "|" + starY + "|92|92|true)");
+		protectHashMap(Stars, starObj.UID, starObj);
+		JOptionPane.showMessageDialog(null, (Object)"Created Star With Params (N:" + starName + "|X:" + starX + "|Y:" + starY + "|Z:" + starZ + "|true)");
 	}
 	
-	void addPlanetOrSatellite(boolean isPlanet) { }
+	void addPlanetOrSatellite(boolean isPlanet) { 
+		String starName = JOptionPane.showInputDialog(null, "Enter object's Name. *Optional", "Add object to star", JOptionPane.QUESTION_MESSAGE);
+		int starIndex = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter StarINDEX (TODO: Do something in here ....)", "Add object to star", JOptionPane.QUESTION_MESSAGE));
+		
+		boolean validRadius = false;
+		
+		while (validRadius == false) {
+			float starX = Float.parseFloat(JOptionPane.showInputDialog(null, "Enter X (Relitive to Home Star)", "Add object to star", JOptionPane.QUESTION_MESSAGE));
+			float starY = Float.parseFloat(JOptionPane.showInputDialog(null, "Enter Y (Relitive to Home Star)", "Add object to star", JOptionPane.QUESTION_MESSAGE));
+			float starZ = Float.parseFloat(JOptionPane.showInputDialog(null, "Enter Z (Relitive to Home Star)", "Add object to star", JOptionPane.QUESTION_MESSAGE));
+			
+			if(starName != null) {
+				String velocityRAW = "0";
+				int velocity = 0;
+				
+				while(velocity == 0) {
+					try {
+						velocityRAW = JOptionPane.showInputDialog(null, "Select velocity (1-500)", "Adding object to Star", JOptionPane.QUESTION_MESSAGE);
+						velocity = Integer.parseInt(velocityRAW);
+						
+						if( velocity < 1 || velocity > (isPlanet?500:100)) {
+							JOptionPane.showMessageDialog(null, "Invalid velocity(" + velocity + ") | please select a velocity (1-500)", "Adding object to Star", JOptionPane.ERROR_MESSAGE);
+							velocity = 0;
+						}
+					} catch(Exception ex) {
+						JOptionPane.showMessageDialog(null, "There was a error parsing the value given. (" + velocityRAW + ")", "Error, please try again", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+				
+				
+				
+				SimObject spaceyRockThingyHomeSTAR = (SimObject) Stars.values().toArray()[0];
+				SimObject spaceyRockThingy = new SimObject(
+						starName, 
+						starX - spaceyRockThingyHomeSTAR.Location.x, 
+						starY - spaceyRockThingyHomeSTAR.Location.y, 
+						starZ - spaceyRockThingyHomeSTAR.Location.y, 
+						false);
+				
+				
+				spaceyRockThingy.orbitBase = connectTo(spaceyRockThingyHomeSTAR, isPlanet);
+				spaceyRockThingy.radius = 
+					(float) Math.sqrt( 
+						Math.abs(spaceyRockThingy.orbitBase.Location.x - spaceyRockThingy.Location.x) * 
+						Math.abs(spaceyRockThingy.orbitBase.Location.x - spaceyRockThingy.Location.x) +
+						Math.abs(spaceyRockThingy.orbitBase.Location.y - spaceyRockThingy.Location.y) * 
+						Math.abs(spaceyRockThingy.orbitBase.Location.y - spaceyRockThingy.Location.y)
+					);
+				
+				if(spaceyRockThingy.radius < 5) {
+					JOptionPane.showMessageDialog(null, "", "Adding object to Star", JOptionPane.ERROR_MESSAGE);
+				} else {
+					validRadius = true;
+					
+					spaceyRockThingy.degree = (float) Math.toDegrees( 
+						Math.asin( 
+							Math.abs(
+								(spaceyRockThingy.Location.y - spaceyRockThingy.orbitBase.Location.y) /
+								spaceyRockThingy.radius
+							)
+						)
+					);
+					
+					if(spaceyRockThingy.Location.x < spaceyRockThingy.orbitBase.Location.x) {
+						if(spaceyRockThingy.Location.y < spaceyRockThingy.orbitBase.Location.y) {
+							spaceyRockThingy.degree -= 180;
+						} else {
+							spaceyRockThingy.degree = 180 - spaceyRockThingy.degree;
+						}
+					} else {
+						if(spaceyRockThingy.Location.y < spaceyRockThingy.orbitBase.Location.y) { 
+							spaceyRockThingy.degree *= -1; // Flip the degree.
+						}
+					}
+					
+					spaceyRockThingy.velocity = velocity/spaceyRockThingy.radius;
+					
+					
+					System.out.println("Added new object to star + (" + spaceyRockThingy.UID + "|" + spaceyRockThingy.Name + ")");
+					
+					if(isPlanet) {
+						protectHashMap(Planets, spaceyRockThingy.UID, spaceyRockThingy);
+					} else {
+						protectHashMap(Satellites, spaceyRockThingy.UID, spaceyRockThingy);
+					}
+				}
+			}
+		}
+	
+		
+	}
 	// SIMULATION <--
 	
 	
@@ -221,19 +304,19 @@ public class Main {
 			SimObject obj = (SimObject) masterSet.get(key);
 			
 			double dTemp = 
-				Math.sqrt(Math.abs(obj.x - base.x)) * 
-				Math.abs( obj.x - base.x ) +
-				Math.abs( obj.y - base.y ) *
-				Math.abs( obj.y - base.y );
+				Math.sqrt(Math.abs(obj.Location.x - base.Location.x)) * 
+				Math.abs( obj.Location.x - base.Location.x ) +
+				Math.abs( obj.Location.y - base.Location.y ) *
+				Math.abs( obj.Location.y - base.Location.y );
 			
 			if(dTemp > Distance) {
 				master = (SimObject)masterSet.get(key);
 				Distance = 
 					Math.sqrt( 
-						Math.abs(master.x - base.x) * 
-						Math.abs(master.x - base.x) +
-						Math.abs(master.y - base.y) * 
-						Math.abs(master.y - base.y)
+						Math.abs(master.Location.x - base.Location.x) * 
+						Math.abs(master.Location.x - base.Location.x) +
+						Math.abs(master.Location.y - base.Location.y) * 
+						Math.abs(master.Location.y - base.Location.y)
 					);
 			}
 		}

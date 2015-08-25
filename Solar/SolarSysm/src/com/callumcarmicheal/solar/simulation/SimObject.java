@@ -4,7 +4,9 @@ import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.TrueTypeFont;
+
 import com.callumcarmicheal.OpenGL.*;
+import com.callumcarmicheal.maths.Vector3f;
 
 public class SimObject {
 	
@@ -13,21 +15,18 @@ public class SimObject {
 		UID,
 		Name;
 	
-	// Size
-	public float 
-		x,
-		y,
-		realWidth = 0,
-		realHeight = 0;
+	// Location
+	public Vector3f 
+		Location;
 	
 	// Simulation
 	public float 
-		velocity,
-		radius,
-		degree;
+		velocity =0f,
+		radius = 0f,
+		degree = 0f;
 	public boolean 
-		moveToTheRight,
-		objectIsFixed,
+		moveToTheRight = false,
+		objectIsFixed = true,
 		debugged = false;
 	public HashMap 
 		orbitChildren = new HashMap();
@@ -39,27 +38,20 @@ public class SimObject {
 	
 	public SimObject(
 			String Name, float X, float Y, 
-			float Width, float Height, boolean isFixed) {
+			float Z, boolean isFixed) {
 		this.Name = Name;
-		this.x = X;
-		this.y = Y;
-		this.realWidth = Width;
-		this.realHeight = Height;
+		this.Location = new Vector3f(X, Y, Z);
 		this.objectIsFixed = isFixed;
 		
 		generateUID();
 	}
 	
 	public SimObject(
-			String Name, float X, float Y, 
-			float Width, float Height, boolean isFixed, 
-			float Radius, float Velocity, boolean moveToTheRight) {
-		
+			String Name, float X, float Y, float Z, 
+			boolean isFixed, float Radius, float Velocity, 
+			boolean moveToTheRight) {
 		this.Name = Name;
-		this.x = X;
-		this.y = Y;
-		this.realWidth = Width;
-		this.realHeight = Height;
+		this.Location = new Vector3f(X, Y, Z);
 		this.objectIsFixed = isFixed;
 		this.radius = Radius;
 		this.velocity = Velocity;
@@ -73,6 +65,8 @@ public class SimObject {
 	}
 	
 	public void onUpdate(SimOptions ops) {
+		
+		
 		if(!this.objectIsFixed) {
 			for(long i=0; i < ops.simulationTime; i++) {
 				degree += velocity;
@@ -80,70 +74,76 @@ public class SimObject {
 					degree = degree % 360;
 			}
 			
-			x = (orbitBase.x + Math.round(radius * Math.cos(Math.toRadians(degree))));
-			y = (orbitBase.y + Math.round(radius * Math.cos(Math.toRadians(degree))));
+			Location.x = (orbitBase.Location.x + Math.round(radius * Math.cos(Math.toRadians(degree))));
+			Location.x = (orbitBase.Location.y + Math.round(radius * Math.cos(Math.toRadians(degree))));
 		}
 	}
 	
 	public void onRender(SimOptions ops, TrueTypeFont renderFont) {
 		GL11.glLoadIdentity();
 		
-		GL11.glPushMatrix(); {
+		//GL11.glPushMatrix(); {
+			//GLUT.drawSphere(1f, 0f, 1f, 10, 1f);
 			
 			if(this.objectIsFixed) {
-				GL11.glTranslatef( x, y, 0f );
+				GL11.glTranslatef( Location.x, Location.y, Location.z );
 			} else {
-				GL11.glTranslatef( orbitBase.x - radius, orbitBase.y - radius, 0f );
+				GL11.glTranslatef( orbitBase.Location.x - radius, orbitBase.Location.y - radius, orbitBase.Location.z - radius );
 			}
 			
-			if((ops.drawOrbit || ops.debugging || debugged) && !objectIsFixed) { 
+			// Draw planet
+			if((ops.drawOrbit || ops.debugging || debugged) && objectIsFixed) { 
 				GL11.glColor3f(1f, 0f, 0f);
-				GLUT.WireSphere3D(radius, 10, 10);
+				GLUT.WireSphere3F((objectIsFixed?3:5), 3, 3);
 			} 
 			
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GLUT.drawSphere(1f, 0f, 1f, 3, 10f);
-			//System.out.print("SimObject(" + Name + UID +  ") -> Render \n");
+			// Draw radius from parent object
+			/*if((ops.drawRadius || ops.debugging || debugged) && !objectIsFixed) { 
+				GL11.glPushMatrix(); {
+					GL11.glColor3f(0f, 1f, 0f);
+					GL11.glBegin(GL11.GL_LINES); {
+						GL11.glVertex3f(orbitBase.Location.x, orbitBase.Location.y, orbitBase.Location.z);
+						GL11.glVertex3f(Location.x, Location.y, Location.z);
+					} GL11.glEnd();
+				} GL11.glPopMatrix();
+			}*/
 			
-			if((ops.drawRadius || ops.debugging || debugged) && !objectIsFixed) { 
-				GL11.glColor3f(0f, 1f, 0f);
-				GL11.glBegin(GL11.GL_LINES); {
-					GL11.glVertex3f(orbitBase.x, orbitBase.y, 0f);
-					GL11.glVertex3f(x, y, 0f);
-				} GL11.glEnd();
-			} 
-			
-			if(ops.debugging || debugged) {
+			// TODO: (FIND OUT WHAT I WAS DOING HERE...) I forgot -.- Really no clue...
+			/* if(ops.debugging || debugged) {
+				float val = 0.4f;
+				
 				GL11.glColor3f(0f, 1f, 0f);
 				
 				GL11.glLineWidth(2);
 				GL11.glBegin(GL11.GL_LINES); {
-					GL11.glVertex3f(x - 100, y, 0f);
-					GL11.glVertex3f(x + 100, y, 0f);
+					GL11.glVertex3f(Location.x - val, Location.y, 0f);
+					GL11.glVertex3f(Location.x + val, Location.y, 0f);
 					
-					GL11.glVertex3f(x, y - 100, 0f);
-					GL11.glVertex3f(x, y + 100, 0f);
+					GL11.glVertex3f(Location.x, Location.y - val, 0f);
+					GL11.glVertex3f(Location.x, Location.y + val, 0f);
 				} GL11.glEnd();
 				
 				GL11.glColor3f(1f, 1f, 0f);
 				
 				GL11.glBegin(GL11.GL_LINE_LOOP); {
-					GL11.glVertex3f(x-4, y-4, 0f);
-					GL11.glVertex3f(x-4, y-4, 0f);
+					GL11.glVertex3f(Location.x-val, Location.y-val, 0f);
+					GL11.glVertex3f(Location.x-val, Location.y-val, 0f);
 				} GL11.glEnd();
-			}
+			} */
 			
+			// TODO: Render Name
 			if(ops.drawName || ops.debugging || debugged) {
 				GL11.glMatrixMode(GL11.GL_MODELVIEW);
-				GL11.glLoadIdentity();
+				//GL11.glLoadIdentity();
 				
 				GL11.glColor3f(1f, 1f, 0f);
-				GL11.glTranslatef( orbitBase.x - radius, orbitBase.y - radius, 0f );
-				GL11.glTranslatef( (float) (Name.length() * -1 / 0.5), realHeight / 2 + 3, 0f);
-				renderFont.drawString(0, 0, Name);
+				//GL11.glTranslatef( orbitBase.Location.x - radius, orbitBase.Location.y - radius, orbitBase.Location.z - radius );
+				GL11.glTranslatef( 0f, 0f, 0f);
+				renderFont.drawString(0, 0, Name + "QWEWQEDAWEADW");
 			}
 			
-		} GL11.glPopMatrix();
+			//System.out.println("Star (" + Name + "| " + UID + ") Location(" + Location.toString() + ")"); // WOULD HELP IF I SPAWNED A STAR -.-
+		//} GL11.glPopMatrix();
 	}
 	
 	public void addChild(SimObject baseObject) {
